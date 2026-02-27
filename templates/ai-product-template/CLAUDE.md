@@ -19,8 +19,9 @@ Use OpenSpec for:
 Key commands:
 - `/opsx:propose "idea"` — Propose a change. Generates proposal, design, specs, and tasks.
 - `/opsx:explore` — Review the current state of specs.
-- `/opsx:apply` — Implement an approved change.
 - `/opsx:archive` — Archive a completed change and update master specs.
+
+Note: `/opsx:apply` is deprecated. After OpenSpec generates tasks, use Design Mode then Superpowers to implement — not `/opsx:apply`.
 
 OpenSpec manages all specs in `openspec/specs/` (delivered capabilities) and `openspec/changes/` (in-progress work). Do not create or edit spec files manually outside of OpenSpec's workflow.
 
