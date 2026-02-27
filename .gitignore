@@ -6,3 +6,6 @@ projects/
 
 # Claude memory (machine-specific, not shared)
 .claude/
+
+# Git worktrees
+.worktrees/
