@@ -10,8 +10,8 @@
     "danger": "#FF7B7B"
   },
   "typography": {
-    "ui_font": "res://assets/ui/fonts/Inter-Regular.tff",
-    "display_font": "res://assets/ui/fonts/Display-Bold.tff",
+    "ui_font": "res://assets/ui/fonts/Inter-Regular.ttf",
+    "display_font": "res://assets/ui/fonts/Display-Bold.ttf",
     "sizes": { "xs": 12, "sm": 14, "md": 16, "lg": 20, "xl": 28 }
   },
   "spacing": { "xs": 4, "sm": 8, "md": 16, "lg": 24, "xl": 40 }
