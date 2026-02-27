@@ -55,8 +55,24 @@ Pass data through signals and exported variables, not `get_node()` paths.
 
 This stack requires a Design Mode handoff before implementation. Before any UI or scene implementation, the Supervisor must ensure the following exist from DESIGN MODE:
 - Wireframes for each new screen/scene
-- Style tokens (color, typography, spacing) — see `../../design/templates/ui_theme.json`
+- Style tokens (color, typography, spacing) — see `design/theme.json`
 - Annotated mockups with layout and interaction notes
 - Exportable UI assets (nine-slice textures, icons, atlases)
 
 Claude must read these design files when implementing UI for Godot projects.
+
+## Theme Generation
+
+Godot Theme resources (`.tres`) are generated programmatically from design tokens via a `ThemeBuilder.gd` script that extends `SceneTree`. This allows headless generation from CLI without the Godot editor.
+
+**Workflow:**
+1. Edit design tokens in `design/theme.json`
+2. Update `src/assets/ui/ThemeBuilder.gd` to reflect token changes
+3. Run `make theme` to regenerate `src/assets/ui/theme.tres`
+4. Commit both ThemeBuilder.gd and theme.tres
+
+**Key details:**
+- ThemeBuilder extends `SceneTree` (not `EditorScript`) so it runs headless
+- All UI assets (fonts, Kenney textures) must live inside `src/` for `res://` access
+- The generated theme.tres is committed to git (not .gitignored)
+- Run `make theme` after any design token or ThemeBuilder change
