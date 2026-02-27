@@ -10,14 +10,14 @@ Action items to complete the Design Mode setup across the factory.
 
 ## beerbrew-tycoon
 
-- [ ] Install Kenney UI pack into `projects/beerbrew-tycoon/assets/ui/` (source: https://kenney.nl/assets/ui-pack)
+- [x] Install Kenney UI pack into `projects/beerbrew-tycoon/assets/ui/kenney/` — installed 2026-02-27
 - [ ] Create Godot ThemeGen script to convert `design/theme.json` into a `.tres` Godot theme resource
 - [ ] Write wireframe for Brew Screen: `design/wireframes/brew-screen.md`
 - [ ] Write wireframe for Style Picker: `design/wireframes/style-picker.md`
 - [ ] Write wireframe for Results Overlay: `design/wireframes/results-overlay.md`
 - [ ] Write wireframe for Main Menu: `design/wireframes/main-menu.md`
 - [ ] Create annotated mockup for Brew Screen once wireframe is approved
-- [ ] Define font choices (display + UI) and add `.tff` files to `assets/ui/fonts/`
+- [x] Install fonts — Inter-Regular.ttf + Display-Bold.ttf (InterDisplay) in `assets/ui/fonts/` — installed 2026-02-27
 - [ ] Set up 9-slice button textures for primary, secondary, and danger button variants
 
 ## Stack Profile
