@@ -1,0 +1,18 @@
+{
+  "name": "default_godot_theme",
+  "palette": {
+    "primary": "#5AA9FF",
+    "accent": "#FFC857",
+    "background": "#0F1724",
+    "surface": "#0B1220",
+    "muted": "#8A9BB1",
+    "success": "#5EE8A4",
+    "danger": "#FF7B7B"
+  },
+  "typography": {
+    "ui_font": "res://assets/ui/fonts/Inter-Regular.tff",
+    "display_font": "res://assets/ui/fonts/Display-Bold.tff",
+    "sizes": { "xs": 12, "sm": 14, "md": 16, "lg": 20, "xl": 28 }
+  },
+  "spacing": { "xs": 4, "sm": 8, "md": 16, "lg": 24, "xl": 40 }
+}
