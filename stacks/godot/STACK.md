@@ -48,3 +48,15 @@ Never reach across the scene tree to call methods on distant nodes.
 **Avoid tight coupling between scenes.**
 A scene should not know the internal structure of another scene.
 Pass data through signals and exported variables, not `get_node()` paths.
+
+---
+
+## Design Integration
+
+This stack requires a Design Mode handoff before implementation. Before any UI or scene implementation, the Supervisor must ensure the following exist from DESIGN MODE:
+- Wireframes for each new screen/scene
+- Style tokens (color, typography, spacing) — see `../../design/templates/ui_theme.json`
+- Annotated mockups with layout and interaction notes
+- Exportable UI assets (nine-slice textures, icons, atlases)
+
+Claude must read these design files when implementing UI for Godot projects.
