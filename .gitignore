@@ -1,0 +1,8 @@
+# Project repos are independent — not tracked by the factory repo
+projects/
+
+# macOS
+.DS_Store
+
+# Claude memory (machine-specific, not shared)
+.claude/

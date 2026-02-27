@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+vendor/
+.venv/
+__pycache__/
+*.pyc
+
+# Build output
+dist/
+build/
+out/
+.build/
+*.o
+*.a
+*.so
+*.dylib
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test output
+coverage/
+.coverage
+*.lcov
+
+# Platform-specific
+# iOS
+*.xcworkspace/xcuserdata/
+DerivedData/
+*.ipa
+
+# Android
+*.apk
+*.aab
+local.properties
+
+# Misc
+*.tmp
+*.bak
