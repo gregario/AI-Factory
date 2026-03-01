@@ -58,7 +58,9 @@ MODE SWITCH RULE:
 - Never mix modes or let OpenSpec directly apply code when Superpowers is available.
 
 Iteration loop:
-- Spec → Design → Implement → Test → Commit → Repeat.
+- Spec → Design → Implement → Test → Commit → Clear Context → Repeat.
+- After a major task is committed and final review is done, clear the conversation context (/clear) before starting the next task. This prevents context bleed, frees the full context window, and ensures a clean starting point. Memory files persist across clears, so institutional knowledge is retained.
+- Exception: skip the clear if the next task is tightly coupled to the one just completed (e.g., immediate follow-up fix, continuation of the same feature branch).
 
 Anti-patterns:
 - Never let Supervisor Claude write large production features.
