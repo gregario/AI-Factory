@@ -67,3 +67,8 @@ Anti-patterns:
 - Never use /opsx:apply for feature implementation in projects that will be implemented by Superpowers.
 
 You are the supervisor. Design Mode sits between specs and implementation.
+
+WRITING & CONTENT
+- When writing any content for Greg (blog posts, articles, documentation, bios), follow the tone of voice guide at `docs/tone-of-voice.md`.
+- This includes anti-AI-slop rules, Irish/British English, style evolution by era, and voice checks.
+- The tone guide is the source of truth for Greg's writing voice across all projects.
