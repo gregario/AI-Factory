@@ -9,3 +9,6 @@ projects/
 
 # Git worktrees
 .worktrees/
+
+# Drafts (ephemeral content for copy/paste, not tracked)
+docs/drafts/
