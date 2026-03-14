@@ -16,6 +16,7 @@ This is not optional. Ignoring the stack profile produces inconsistent, unmainta
 | `testing.md` | Writing tests or adding to an existing test suite |
 | `performance.md` | Optimising, profiling, or working on hot paths |
 | `pitfalls.md` | Debugging unexpected behaviour or reviewing code |
+| `ai_assets.md` | Generating, importing, or managing AI-created 2D assets |
 
 ---
 
