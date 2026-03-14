@@ -12,3 +12,6 @@ projects/
 
 # Drafts and personal docs (ephemeral content, not tracked)
 docs/drafts/
+
+# Downstream project plans (private ideas, not shared)
+docs/plans/projects/

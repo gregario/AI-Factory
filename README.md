@@ -97,7 +97,7 @@ Stack profiles capture everything Claude needs to write idiomatic, tested, produ
 
 | Stack | Contents |
 |-------|----------|
-| `stacks/godot/` | Godot 4 + GDScript — coding standards, testing (GUT), project structure, pitfalls, performance |
+| `stacks/godot/` | Godot 4 + GDScript — coding standards, testing (GUT), project structure, pitfalls, performance, AI asset generation |
 | `stacks/typescript/` | TypeScript + Node.js — framework-agnostic base for any TS project |
 | `stacks/mcp/` | MCP server development — tool design, security, testing, publishing. Layers on TypeScript |
 
