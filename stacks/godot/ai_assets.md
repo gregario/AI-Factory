@@ -238,3 +238,31 @@ src/
 3. Human approves release manifest.
 4. Generate replacements — same filenames without `_placeholder` suffix.
 5. Delete old placeholder files. No code changes needed — filenames match.
+
+---
+
+## Guardrails
+
+These rules apply on top of the tier-specific gates above. They prevent runaway generation costs and ensure human oversight. Also enforced at factory level in CLAUDE.md for all stacks.
+
+### Per-Session Limits
+
+- Maximum 10 image generations per session without explicit user approval.
+- After 10: pause, report the count and estimated cost, and ask before continuing.
+
+### Budget Gates
+
+- Before any batch generation (>3 images in one go): report estimated cost and ask for approval.
+- Track cumulative generation count per session.
+
+### Prompt Validation
+
+- Reject prompts that are too vague (e.g., "make it look good," "something cool"). Require specific art direction: subject, style, palette, composition.
+- Reject prompts that duplicate recent generations — check against session history before generating.
+- After the first generation, require reference to art direction doc or style guide for consistency.
+
+### Quality Checkpoints
+
+- After generating 3+ assets: pause for human review before continuing.
+- Never auto-integrate generated assets into the project without human approval.
+- Show generated assets to the user before moving to the next batch.

@@ -57,6 +57,20 @@ MODE SWITCH RULE:
 - If /specs/tasks files exist → Enter DESIGN MODE (Mode 2), produce design deliverables → then switch to Execution Mode (Mode 3).
 - Never mix modes or let OpenSpec directly apply code when Superpowers is available.
 
+COGNITIVE POSTURES (within Execution Mode)
+When in Execution Mode, the Engineer adopts different postures depending on the task. These are not modes — they don't need explicit switching. Skills activate the right posture automatically:
+
+- BUILDER: Writing new code. TDD rhythm. Forward momentum.
+  Skills: test-driven-development, writing-plans, executing-plans, subagent-driven-development
+- REVIEWER: Examining code for correctness and quality. Skeptical posture. Looking for what's wrong, not what's right.
+  Skills: code-review, structural-review, requesting-code-review, receiving-code-review
+- DEBUGGER: Investigating failures. Hypothesis-driven. No guessing, no shotgun fixes.
+  Skills: systematic-debugging
+- SHIPPER: Getting code landed. Changelog, version, PR. Momentum without cutting corners.
+  Skills: ship, finishing-a-development-branch, verification-before-completion
+
+The key insight: each posture has a DIFFERENT relationship to the code. A builder adds, a reviewer questions, a debugger investigates, a shipper packages. Mixing postures (e.g., reviewing while building) leads to weak reviews and slow builds.
+
 Iteration loop:
 - Spec → Design → Implement → Test → Commit → Clear Context → Repeat.
 - After a major task is committed and final review is done, clear the conversation context (/clear) before starting the next task. This prevents context bleed, frees the full context window, and ensures a clean starting point. Memory files persist across clears, so institutional knowledge is retained.
@@ -71,3 +85,16 @@ You are the supervisor. Design Mode sits between specs and implementation.
 WRITING & CONTENT
 - When writing any content for the user (blog posts, articles, documentation, bios), follow the tone of voice guide at `docs/drafts/tone-of-voice.md` if it exists.
 - The tone guide is personal (gitignored) and not part of the public factory repo.
+
+AI IMAGE GENERATION
+- These rules apply to ALL projects using AI image generation, regardless of stack.
+- Read the relevant stack's asset generation guide before generating (e.g., stacks/godot/ai_assets.md).
+- Max 10 generations per session without user approval. Pause and report after 10.
+- Before batch generation (>3 images): report estimated cost and ask for approval.
+- Never auto-integrate generated assets without human approval.
+- Require specific art direction in prompts — reject vague requests.
+
+FACTORY RETRO NUDGE
+- At conversation start, if `.context/retros/` exists, check the most recent JSON file's date.
+- If 7+ days since last retro: mention once — "It's been N days since your last factory retro. Run /factory-retro when you're curious."
+- Do not block. Do not repeat. Just awareness.
