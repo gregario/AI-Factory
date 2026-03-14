@@ -1,5 +1,6 @@
 {
-  "name": "default_godot_theme",
+  "name": "example_theme",
+  "description": "Starter theme config — copy and adapt for your project",
   "palette": {
     "primary": "#5AA9FF",
     "accent": "#FFC857",
@@ -10,8 +11,8 @@
     "danger": "#FF7B7B"
   },
   "typography": {
-    "ui_font": "res://assets/ui/fonts/Inter-Regular.ttf",
-    "display_font": "res://assets/ui/fonts/Display-Bold.ttf",
+    "ui_font": "Inter or equivalent sans-serif",
+    "display_font": "Display/heading font",
     "sizes": { "xs": 12, "sm": 14, "md": 16, "lg": 20, "xl": 28 }
   },
   "spacing": { "xs": 4, "sm": 8, "md": 16, "lg": 24, "xl": 40 }

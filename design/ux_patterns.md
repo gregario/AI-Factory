@@ -1,5 +1,7 @@
 # UX Patterns & Accessibility
+
 - Interactions: prefer clear affordances and minimal friction.
-- Input mapping: support keyboard/mouse and controller by default.
-- Accessibility: color contrast, scalable font sizes, readable labels.
-- Navigation: predictable back behavior, consistent menu structure.
+- Accessibility: colour contrast (WCAG AA minimum), scalable font sizes, readable labels, keyboard navigation.
+- Navigation: predictable back behaviour, consistent menu/nav structure.
+- Error states: always design the error state, empty state, and loading state — not just the happy path.
+- Mobile/responsive: design mobile-first where applicable; test at key breakpoints.

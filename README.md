@@ -12,16 +12,84 @@ AI-Factory is a structured workflow for building products with AI. Instead of on
 
 The human is the Product Owner. Claude switches between Product Manager, Designer, and Engineer roles depending on the mode.
 
-## How It Works
+## Architecture
 
-```
-Spec → Design → Implement → Test → Commit → Clear Context → Repeat
+### Tool Ecosystem
+
+```mermaid
+graph TB
+    subgraph "Human Layer"
+        PO["Product Owner"]
+    end
+
+    subgraph "AI Factory — CLAUDE.md"
+        SUP["Supervisor Claude<br/><i>Orchestrates modes</i>"]
+
+        subgraph "Mode 1: Spec"
+            OS["OpenSpec<br/><i>Product Manager</i>"]
+        end
+
+        subgraph "Mode 2: Design"
+            DM["Design Mode<br/><i>Product Designer</i>"]
+        end
+
+        subgraph "Mode 3: Execution"
+            SP["Superpowers<br/><i>Engineering Team</i>"]
+            CR["Code Review<br/><i>Quality Gate</i>"]
+            CC["Commit Commands<br/><i>Git Automation</i>"]
+        end
+    end
+
+    subgraph "Knowledge Layer"
+        ST["Stack Profiles<br/><i>Senior Engineers</i>"]
+        TM["Templates<br/><i>Project Starters</i>"]
+        DS["Design System<br/><i>Tokens & Patterns</i>"]
+    end
+
+    subgraph "Project Layer"
+        P1["Project A"]
+        P2["Project B"]
+        P3["Project N"]
+    end
+
+    PO -->|"idea"| SUP
+    SUP --> OS
+    SUP --> DM
+    SUP --> SP
+    SP --> CR
+    CR --> CC
+
+    ST -.->|"standards"| SP
+    TM -.->|"starter files"| P1
+    DS -.->|"tokens"| DM
+
+    OS -->|"specs + tasks"| DM
+    DM -->|"deliverables"| SP
+    CC -->|"commits"| P1
+    CC -->|"commits"| P2
+    CC -->|"commits"| P3
 ```
 
-- **CLAUDE.md** is the factory operating system — it tells Claude how to behave in each mode
-- **Stack Profiles** (`stacks/`) are senior engineer knowledge bases for specific technologies
-- **Templates** (`templates/`) provide starter files for new projects
-- **Projects** (`projects/`) contain individual products (gitignored — each is its own repo)
+### Project Lifecycle
+
+```mermaid
+graph LR
+    A["Idea"] --> B["Spec Mode<br/><code>/opsx:propose</code>"]
+    B -->|"specs + tasks"| C["Design Mode<br/><i>wireframes, tokens</i>"]
+    C -->|"deliverables"| D["Execution Mode<br/><i>TDD, subagents</i>"]
+    D --> E{"Tests<br/>Pass?"}
+    E -->|"no"| D
+    E -->|"yes"| F["Code Review"]
+    F --> G["Commit + Ship"]
+    G -->|"clear context"| H{"More<br/>Tasks?"}
+    H -->|"yes"| B
+    H -->|"no"| I["Done"]
+
+    style B fill:#2d4a7a,color:#fff
+    style C fill:#5a3d7a,color:#fff
+    style D fill:#3d6b4f,color:#fff
+    style F fill:#7a5a2d,color:#fff
+```
 
 ## Stack Profiles
 
@@ -77,6 +145,10 @@ OpenSpec (the Product Manager) is invoked via slash commands (`/opsx:propose`, `
 3. Run `claude` from the repo root
 4. Create a new project: copy `templates/ai-product-template/` to `projects/your-project/`
 5. Start with `/opsx:propose "your idea"` to enter Spec Mode
+
+## Roadmap
+
+See [docs/plans/2026-03-14-roadmap.md](docs/plans/2026-03-14-roadmap.md) for planned enhancements across three time horizons.
 
 ## License
 
