@@ -1,0 +1,164 @@
+# Publishing & Distribution — MCP Server
+
+This is the definition of done for shipping an MCP server. An MCP server is not "done" when the code works — it's done when it's published, listed, discoverable, and installable with one command.
+
+---
+
+## Publishing Pipeline
+
+Complete these in order. Each step gates the next.
+
+### Step 1: npm Publish
+
+**Gate:** All tests pass, build succeeds, `npx -y your-package` works locally.
+
+**Checklist:**
+
+- [ ] `package.json` has correct `name`, `version`, `description`, `license`, `repository`
+- [ ] `"type": "module"` set
+- [ ] `bin` field maps package name to `dist/index.js`
+- [ ] `files` field restricts published contents (`["dist", "README.md", "LICENSE"]`)
+- [ ] `keywords` includes `"mcp"`, `"model-context-protocol"`, and domain terms
+- [ ] `engines` specifies minimum Node version (`>=18.0.0`)
+- [ ] `prepublishOnly` script runs build + tests
+- [ ] Entry point has shebang `#!/usr/bin/env node`
+- [ ] Build script includes `chmod +x dist/index.js`
+- [ ] `LICENSE` file exists in repo root
+- [ ] README includes: what it does, installation, tool descriptions, IDE config examples
+- [ ] `npm pack --dry-run` shows only intended files
+- [ ] `npx -y your-package` works from a clean directory (test this!)
+
+**Naming convention:** `{service}-mcp-server` or `{name}-mcp` or a distinctive brand name (like `godot-forge`). Scoped packages (`@scope/name`) also work.
+
+```bash
+npm publish            # First publish
+npm publish --access public  # If scoped package
+```
+
+### Step 2: Glama AI Listing
+
+**Gate:** npm package is published and installable.
+
+Glama auto-discovers servers from GitHub, but you should claim ownership.
+
+1. Add `glama.json` to repo root:
+   ```json
+   {
+     "$schema": "https://glama.ai/mcp/schemas/server.json",
+     "maintainers": ["your-github-username"]
+   }
+   ```
+
+2. Authenticate on [glama.ai](https://glama.ai) with GitHub.
+
+3. Find your server listing and click "Claim ownership".
+
+4. Check your score page (`glama.ai/mcp/servers/.../score`):
+   - [ ] LICENSE file detected
+   - [ ] README quality passes
+   - [ ] Tools/resources/prompts detected (server must be inspectable)
+   - [ ] No security flags
+
+5. Use "Sync Server" button after any updates.
+
+### Step 3: Official MCP Registry
+
+**Gate:** npm package published, Glama listed.
+
+The canonical registry at `registry.modelcontextprotocol.io`, backed by Anthropic/GitHub/Microsoft.
+
+1. Add `mcpName` to `package.json` using reverse DNS format:
+   ```json
+   "mcpName": "io.github.username/server-name"
+   ```
+
+2. Add the mcp-name to README (can be an HTML comment):
+   ```html
+   <!-- mcp-name: io.github.username/server-name -->
+   ```
+
+3. Follow the [quickstart](https://github.com/modelcontextprotocol/registry/blob/main/docs/modelcontextprotocol-io/quickstart.mdx) to authenticate namespace ownership via GitHub OAuth.
+
+4. Package versions in registry must match published npm versions.
+
+### Step 4: awesome-mcp-servers PR
+
+**Gate:** npm published, server works, README is solid.
+
+Submit a PR to [punkpeye/awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) with your server in the appropriate category.
+
+### Step 5: Smithery (Optional)
+
+For hosted/remote MCP servers, [smithery.ai](https://smithery.ai) offers hosting + registry.
+
+Publish via CLI or web UI at `smithery.ai/new`.
+
+---
+
+## IDE Configuration Snippets
+
+Your README should include config for at minimum these clients:
+
+**Claude Code:**
+```bash
+claude mcp add my-server -- npx -y my-mcp-server
+```
+
+**Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "my-mcp-server"]
+    }
+  }
+}
+```
+
+**Cursor** (`.cursor/mcp.json`):
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "my-mcp-server"]
+    }
+  }
+}
+```
+
+Include snippets for as many IDEs as relevant. See the [godot-forge README](https://github.com/gregario/godot-forge) for a comprehensive example covering 15+ IDEs.
+
+---
+
+## Version Bumping
+
+Use semantic versioning:
+- **Patch** (0.1.x): bug fixes, no tool changes
+- **Minor** (0.x.0): new tools, new features, backward-compatible
+- **Major** (x.0.0): removed tools, breaking parameter changes, transport changes
+
+After bumping:
+```bash
+npm version patch  # or minor, major
+npm publish
+```
+
+Then sync Glama and update MCP Registry if needed.
+
+---
+
+## Definition of Done — Full Checklist
+
+An MCP server project is **done** when:
+
+- [ ] All tests pass
+- [ ] `npx -y package-name` installs and runs from a clean environment
+- [ ] Published to npm
+- [ ] `glama.json` in repo, ownership claimed on Glama, score page clean
+- [ ] Listed on Official MCP Registry (`mcpName` in package.json)
+- [ ] PR submitted to awesome-mcp-servers
+- [ ] README has IDE config snippets (minimum: Claude Code, Claude Desktop, Cursor)
+- [ ] LICENSE file in repo root
+- [ ] Community launch plan reviewed (see `launch.md`)

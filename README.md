@@ -45,21 +45,39 @@ Each profile includes a `STACK.md` overview plus focused docs (read only the one
 
 **Context hygiene** — clear the conversation after each major task. Memory files persist across clears, so institutional knowledge is retained without context bleed.
 
+## Prerequisites
+
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLI or Desktop)
+- A Claude Pro or Team subscription
+
+### Required Plugins
+
+AI-Factory uses Claude Code plugins for its three-mode workflow. These are **Claude Code-only** — they don't work in Cursor, VS Code, or other editors.
+
+Install them after cloning:
+
+```bash
+claude plugin install superpowers@claude-plugins-official
+claude plugin install code-review@claude-plugins-official
+claude plugin install commit-commands@claude-plugins-official
+```
+
+| Plugin | Role | What It Does |
+|--------|------|-------------|
+| **Superpowers** | Engineering Team | TDD, code review, subagent-driven development, worktrees, systematic debugging |
+| **Code Review** | Quality Gate | Pull request review against plans and coding standards |
+| **Commit Commands** | Git Automation | Commit, push, PR creation, branch cleanup |
+
+OpenSpec (the Product Manager) is invoked via slash commands (`/opsx:propose`, `/opsx:explore`, `/opsx:archive`) and doesn't require a separate plugin install.
+
 ## Getting Started
 
 1. Clone this repo
-2. Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
+2. Install Claude Code and the plugins above
 3. Run `claude` from the repo root
 4. Create a new project: copy `templates/ai-product-template/` to `projects/your-project/`
 5. Start with `/opsx:propose "your idea"` to enter Spec Mode
 
-## Plugins Used
-
-- **OpenSpec** — product management (specs, proposals, task generation)
-- **Superpowers** — engineering execution (TDD, code review, subagents, worktrees)
-- **Code Review** — pull request review
-- **Commit Commands** — git workflow automation
-
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE)
