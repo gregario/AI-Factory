@@ -41,6 +41,12 @@ make test
 cd src && "$GODOT" --headless --path . -s res://addons/gut/gut_cmdln.gd -gconfig=res://.gutconfig.json -gexit
 ```
 
+### Using godot-forge MCP (Preferred)
+
+If the project has godot-forge configured (check `.mcp.json`), prefer the `test-runner` MCP tool over `make test`. It provides structured pass/fail results per test, making failures easier to diagnose. The MCP server also offers `script-analysis`, `scene-analysis`, `docs-search`, and `lsp-diagnostics` tools for development.
+
+`make test` remains the fallback for CI and human use.
+
 ---
 
 ## Test File Conventions

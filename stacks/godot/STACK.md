@@ -51,6 +51,12 @@ Pass data through signals and exported variables, not `get_node()` paths.
 
 ---
 
+## Godot Forge MCP Integration
+
+Projects may have godot-forge configured as an MCP server (check for `.mcp.json` in the project root). When available, prefer MCP tools over shell commands for test running, diagnostics, scene/script analysis, and API doc lookups. See the project's CLAUDE.md for the full tool list.
+
+---
+
 ## Design Integration
 
 This stack requires a Design Mode handoff before implementation. Before any UI or scene implementation, the Supervisor must ensure the following exist from DESIGN MODE:
