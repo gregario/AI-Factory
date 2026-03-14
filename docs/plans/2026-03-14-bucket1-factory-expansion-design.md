@@ -1,6 +1,6 @@
 # Bucket 1: Factory Expansion Design
 
-> Cohesive upgrade to the AI Factory's workflow — six items from the short-term roadmap, delivered as a local plugin, doc updates, and CLAUDE.md enhancements.
+> Cohesive upgrade to the AI Factory's workflow — six items from the short-term roadmap, delivered as local skills, doc updates, and CLAUDE.md enhancements.
 
 **Date:** 2026-03-14
 **Source:** `docs/plans/2026-03-14-roadmap.md` (Bucket 1, items 1.1–1.6)
@@ -12,30 +12,24 @@
 
 | # | Item | Delivery Mechanism |
 |---|------|--------------------|
-| 1.1 | Product Taste | Skill: `plugins/ai-factory/skills/product-taste/SKILL.md` |
-| 1.2 | Enhanced Ship | Skill: `plugins/ai-factory/skills/ship/SKILL.md` |
-| 1.3 | Structural Review | Skill: `plugins/ai-factory/skills/structural-review/SKILL.md` |
-| 1.4 | Factory Retrospective | Skill: `plugins/ai-factory/skills/factory-retrospective/SKILL.md` |
+| 1.1 | Product Taste | Skill: `.claude/skills/product-taste/SKILL.md` |
+| 1.2 | Enhanced Ship | Skill: `.claude/skills/ship/SKILL.md` |
+| 1.3 | Structural Review | Skill: `.claude/skills/structural-review/SKILL.md` |
+| 1.4 | Factory Retrospective | Skill: `.claude/skills/factory-retrospective/SKILL.md` |
 | 1.5 | AI Image Guardrails | Docs: `stacks/godot/ai_assets.md` guardrails section + factory-level CLAUDE.md rules |
 | 1.6 | Cognitive Modes | CLAUDE.md: new "Cognitive Postures" section |
 
-### Plugin Structure
+### Skills Structure
 
 ```
-plugins/ai-factory/
-  plugin.json
-  skills/
-    product-taste/
-      SKILL.md
-    ship/
-      SKILL.md
-    structural-review/
-      SKILL.md
-    factory-retrospective/
-      SKILL.md
+.claude/skills/
+  product-taste/SKILL.md        ← 1.1
+  ship/SKILL.md                 ← 1.2
+  structural-review/SKILL.md    ← 1.3
+  factory-retrospective/SKILL.md ← 1.4
 ```
 
-The plugin is local to AI-Factory (not published). Registered in `.claude/settings.json` alongside superpowers, code-review, and commit-commands.
+Skills are local to the AI-Factory repo, force-added to git (`.claude/` is gitignored by default). No plugin registration needed — Claude Code discovers skills in `.claude/skills/` automatically.
 
 ---
 
@@ -391,13 +385,13 @@ This makes explicit what Superpowers already does implicitly, and creates named 
 
 ## Future Considerations (Bucket 2)
 
-The plugin structure is designed to accommodate future skills:
+The skills directory is designed to accommodate future additions:
 
 ```
-plugins/ai-factory/skills/
+.claude/skills/
   # Bucket 2 (medium-term):
-  browser-qa/          ← 2.1 Browser QA integration
-  diff-aware-qa/       ← 2.4 Diff-aware QA
+  browser-qa/SKILL.md          ← 2.1 Browser QA integration
+  diff-aware-qa/SKILL.md       ← 2.4 Diff-aware QA
 ```
 
 gstack's `qa`, `test`, and `browse` skills will inform these when the time comes.
