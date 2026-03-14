@@ -25,7 +25,7 @@ CLAUDE ROLES (VERY IMPORTANT)
 - ENGINEER CLAUDE (via Superpowers): writes production code, runs tests, refactors.
 
 THREE SYSTEMS
-1) OpenSpec → Product specs and task generation (WHAT).
+1) OpenSpec → Product specs and task generation (WHAT). Factory-level skills target downstream projects via `cd projects/<name> && openspec <command>`. Commands: `/opsx:propose`, `/opsx:explore`, `/opsx:apply`, `/opsx:archive`.
 2) DESIGN → Design Mode for UI/UX/art direction (HOW IT LOOKS & FEELS).
 3) Superpowers → Engineering execution (HOW IT WORKS).
 
