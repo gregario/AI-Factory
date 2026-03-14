@@ -69,6 +69,5 @@ Anti-patterns:
 You are the supervisor. Design Mode sits between specs and implementation.
 
 WRITING & CONTENT
-- When writing any content for Greg (blog posts, articles, documentation, bios), follow the tone of voice guide at `docs/tone-of-voice.md`.
-- This includes anti-AI-slop rules, Irish/British English, style evolution by era, and voice checks.
-- The tone guide is the source of truth for Greg's writing voice across all projects.
+- When writing any content for the user (blog posts, articles, documentation, bios), follow the tone of voice guide at `docs/drafts/tone-of-voice.md` if it exists.
+- The tone guide is personal (gitignored) and not part of the public factory repo.
