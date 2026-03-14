@@ -3,4 +3,150 @@ name: ship
 description: Use when ready to ship a feature branch — merge main, run tests, structural review, changelog, version bump, bisectable commits, push, create PR
 ---
 
-<!-- TODO: implement -->
+# Ship
+
+Fully automated ship workflow. User says `/ship`, next thing they see is the PR URL.
+
+Adapted from [gstack](https://github.com/garrytan/gstack) by Garry Tan (MIT).
+
+## Philosophy
+
+Non-interactive by default. Only stop for:
+- On main branch (abort immediately)
+- Merge conflicts that cannot be auto-resolved (show conflicts, stop)
+- Test failures (show output, stop)
+- Structural review CRITICAL issues (show findings, let user decide)
+- MAJOR version bump (ask for confirmation)
+
+Everything else proceeds autonomously.
+
+## Flow
+
+Execute these 8 steps in order. If any step fails, stop and report.
+
+### Step 1: Pre-flight
+
+1. Run `git branch --show-current`. If `main` or `master`, abort with: "You are on the main branch. Create a feature branch first."
+2. Run `git status` (never use `-uall`). If there are uncommitted changes, stage and commit them first with an appropriate message.
+3. Run `git diff --stat main..HEAD` and `git log --oneline main..HEAD` to understand what this branch contains.
+4. Store the branch name, diff stats, and commit log for later use.
+
+### Step 2: Merge origin/main
+
+1. Run `git fetch origin main`.
+2. Run `git merge origin/main --no-edit`.
+3. If merge succeeds cleanly, continue.
+4. If merge conflicts occur:
+   - Check if conflicts are trivial (e.g., lock files, auto-generated files). If so, resolve them and continue.
+   - For non-trivial conflicts: show the conflicting files and stop. Tell the user to resolve conflicts and run `/ship` again.
+
+### Step 3: Run tests
+
+Detect the test runner from project context. Check these sources in order:
+1. Project CLAUDE.md for test commands
+2. Stack profile (e.g., `stacks/*/STACK.md`, `stacks/*/testing.md`)
+3. `Makefile` — look for `test` target
+4. `package.json` — look for `test` script
+5. GUT tests — look for `tests/` directory with `.gd` test files
+
+Run all detected test suites. If any tests fail, show the failure output and stop. Do not proceed with failing tests.
+
+### Step 4: Structural review
+
+Read `.claude/skills/structural-review/SKILL.md` and follow its process against the changes in this branch (`git diff main..HEAD`).
+
+After the review:
+- **No CRITICAL issues**: continue to step 5.
+- **CRITICAL issues found and auto-fixable**: fix them, commit the fixes, then STOP. Tell the user: "Fixed CRITICAL issues from structural review. Run `/ship` again to continue."
+- **CRITICAL issues found but not auto-fixable**: show findings and stop. Let the user decide how to proceed.
+
+Include the review summary (all severity levels) in the PR description later.
+
+### Step 5: Version bump
+
+1. Auto-detect the version file. Check in order:
+   - `VERSION` file
+   - `package.json` (`version` field)
+   - `project.godot` (`config/version`)
+   - If no version file found, skip this step.
+2. Determine bump level from the diff:
+   - **PATCH** (default): bug fixes, small changes
+   - **MINOR**: 500+ lines changed, new features — auto-apply but mention it
+   - **MAJOR**: breaking changes — always ask the user for confirmation before applying
+3. Apply the version bump to the detected file. Do not commit yet (included in step 7).
+
+### Step 6: Changelog
+
+1. Generate changelog entries from `git log --oneline main..HEAD`.
+2. Categorize each commit into: **Added**, **Changed**, **Fixed**, **Removed**.
+3. If `CHANGELOG.md` exists, prepend the new version section at the top (below the title).
+4. If `CHANGELOG.md` does not exist, create it with a `# Changelog` header and the new version section.
+5. Format:
+   ```
+   ## [X.Y.Z] - YYYY-MM-DD
+
+   ### Added
+   - Description of additions
+
+   ### Changed
+   - Description of changes
+
+   ### Fixed
+   - Description of fixes
+
+   ### Removed
+   - Description of removals
+   ```
+6. Omit empty categories. Do not commit yet (included in step 7).
+
+### Step 7: Commit splitting
+
+Make commits bisectable. Each commit must be independently valid (tests should pass at each point).
+
+**If the total change is small** (<50 lines changed AND <4 files changed): make a single commit with all changes.
+
+**Otherwise**, split into ordered commits:
+1. **Infrastructure** — config, dependencies, build changes
+2. **Core logic** — business logic, models, autoloads, managers
+3. **UI** — scenes, overlays, visual changes
+4. **Version + changelog** — version bump and changelog updates (always last)
+
+Commit message format: `<type>: <summary>` where type is one of: `feat`, `fix`, `chore`, `refactor`, `docs`.
+
+Only the **final commit** gets the co-author trailer:
+```
+Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+```
+
+### Step 8: Push + PR
+
+1. Run `git push -u origin <branch-name>`.
+2. Create the PR:
+   ```
+   gh pr create --title "<concise title>" --body "<body>"
+   ```
+3. PR body format:
+   ```
+   ## Summary
+   - Bullet points from diff stats and commit log
+
+   ## Structural review
+   - Summary of findings by severity (or "No issues found")
+
+   ## Test results
+   - Suite name: X tests passing
+
+   ---
+   Generated with [Claude Code](https://claude.com/claude-code)
+   ```
+4. Output the PR URL as the **final line** of output.
+
+## Rules
+
+- Never skip tests or structural review.
+- Never force push.
+- Never ask for confirmation except MAJOR version bumps and CRITICAL structural findings.
+- Never use `git status -uall`.
+- Never push to main/master directly.
+- Split commits for bisectability when the change is non-trivial.
+- If any step fails, stop immediately and report. Do not attempt to continue past failures.
