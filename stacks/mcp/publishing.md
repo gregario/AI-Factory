@@ -56,13 +56,30 @@ Glama auto-discovers servers from GitHub, but you should claim ownership.
 4. **Glama scorecard requirements** — all must pass before submitting awesome-mcp-servers PR:
    - [ ] LICENSE file detected (must exist in repo root)
    - [ ] README quality passes
-   - [ ] GitHub Release exists (tag matching current npm version)
+   - [ ] GitHub Release exists (not just a git tag: `gh release create vX.Y.Z`)
    - [ ] Dockerfile exists in repo root (required for server inspection + tool detection)
    - [ ] Tools/resources/prompts detected (server must be inspectable via Dockerfile)
    - [ ] No security flags
    - [ ] Author verified (claim ownership via GitHub auth)
 
-5. **Dockerfile template** (required for Glama inspection):
+5. **Dockerfile template** (required for Glama inspection).
+   Use multi-stage build if you have native dependencies (better-sqlite3, etc.):
+   ```dockerfile
+   FROM node:22-slim AS builder
+   RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+   WORKDIR /app
+   COPY package.json package-lock.json ./
+   RUN npm ci --omit=dev
+   COPY dist/ dist/
+
+   FROM node:22-slim
+   WORKDIR /app
+   COPY --from=builder /app/node_modules ./node_modules
+   COPY --from=builder /app/dist ./dist
+   COPY --from=builder /app/package.json ./
+   ENTRYPOINT ["node", "dist/server.js"]
+   ```
+   For pure JS servers (no native deps), a single-stage build is fine:
    ```dockerfile
    FROM node:22-slim
    WORKDIR /app
