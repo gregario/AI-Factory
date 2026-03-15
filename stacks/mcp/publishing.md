@@ -63,14 +63,17 @@ Glama auto-discovers servers from GitHub, but you should claim ownership.
    - [ ] Author verified (claim ownership via GitHub auth)
 
 5. **Dockerfile template** (required for Glama inspection).
+   IMPORTANT: Glama clones the repo and builds the Docker image. `dist/` is gitignored so the Dockerfile MUST build from source, not copy dist/. This is the #1 reason Glama shows "server not inspectable".
+
    Use multi-stage build if you have native dependencies (better-sqlite3, etc.):
    ```dockerfile
    FROM node:22-slim AS builder
    RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
    WORKDIR /app
-   COPY package.json package-lock.json ./
-   RUN npm ci --omit=dev
-   COPY dist/ dist/
+   COPY package.json package-lock.json tsconfig.json ./
+   COPY src/ src/
+   RUN npm ci
+   RUN npm run build
 
    FROM node:22-slim
    WORKDIR /app
@@ -79,13 +82,20 @@ Glama auto-discovers servers from GitHub, but you should claim ownership.
    COPY --from=builder /app/package.json ./
    ENTRYPOINT ["node", "dist/server.js"]
    ```
-   For pure JS servers (no native deps), a single-stage build is fine:
+   For pure JS servers (no native deps):
    ```dockerfile
+   FROM node:22-slim AS builder
+   WORKDIR /app
+   COPY package.json package-lock.json tsconfig.json ./
+   COPY src/ src/
+   RUN npm ci
+   RUN npm run build
+
    FROM node:22-slim
    WORKDIR /app
-   COPY package.json package-lock.json ./
-   RUN npm ci --omit=dev
-   COPY dist/ dist/
+   COPY --from=builder /app/node_modules ./node_modules
+   COPY --from=builder /app/dist ./dist
+   COPY --from=builder /app/package.json ./
    ENTRYPOINT ["node", "dist/index.js"]
    ```
    Adjust the entry point to match your `bin` field in package.json.
