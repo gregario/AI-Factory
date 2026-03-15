@@ -80,10 +80,28 @@ NEW PROJECT DEFINITION OF DONE
 Every new project must have these files before any feature work begins:
 - `LICENSE` — MIT for open source projects. Other projects: decide case-by-case with the Product Owner.
 - `.github/FUNDING.yml` — `github: [gregario]` (inherited from gregario/.github for repos without one, but include explicitly for reliability).
-- `README.md` — project name, one-line description, install/setup, licence reference.
+- `README.md` — project name, one-line description, install/setup, licence reference. Must include shields.io badge pills at the top (see below).
 - `.gitignore` — appropriate for the stack.
 - `CLAUDE.md` — project-level instructions (from template).
 The templates (`templates/ai-product-template/`, `templates/web-product/`) include all of these. If creating a project outside the templates, add them manually.
+
+README BADGE PILLS
+Every public repo README must have a centered badge row at the top. Choose badges based on project type:
+
+Always (all public repos):
+- MIT License badge
+- GitHub Sponsors badge: `[![Sponsor](https://img.shields.io/badge/sponsor-♥-ea4aaa.svg)](https://github.com/sponsors/gregario)`
+
+npm packages (MCP servers, CLI tools, libraries):
+- npm version badge
+- npm downloads/month badge
+- Node.js 18+ badge
+
+MCP servers (in addition to npm badges):
+- MCP Compatible badge: `[![MCP Compatible](https://img.shields.io/badge/MCP-compatible-purple.svg)](https://modelcontextprotocol.io)`
+- Glama registry card (below the badge row)
+
+Reference layout: see godot-forge or brewers-almanack README for the exact HTML pattern with `<p align="center">`.
 
 Anti-patterns:
 - Never let Supervisor Claude write large production features.
