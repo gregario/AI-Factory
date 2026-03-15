@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+vendor/
+.venv/
+__pycache__/
+*.pyc
+
+# Build output
+dist/
+build/
+out/
+.build/
+.next/
+*.o
+*.a
+*.so
+*.dylib
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test output
+coverage/
+.coverage
+*.lcov
+
+# QA screenshots (generated, not tracked)
+.gstack/qa-reports/screenshots/
+
+# Keep QA reports and baselines
+!.gstack/qa-reports/*.md
+!.gstack/qa-reports/*.json
+
+# Misc
+*.tmp
+*.bak
