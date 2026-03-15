@@ -53,13 +53,42 @@ Glama auto-discovers servers from GitHub, but you should claim ownership.
 
 3. Find your server listing and click "Claim ownership".
 
-4. Check your score page (`glama.ai/mcp/servers/.../score`):
-   - [ ] LICENSE file detected
+4. **Glama scorecard requirements** — all must pass before submitting awesome-mcp-servers PR:
+   - [ ] LICENSE file detected (must exist in repo root)
    - [ ] README quality passes
-   - [ ] Tools/resources/prompts detected (server must be inspectable)
+   - [ ] GitHub Release exists (tag matching current npm version)
+   - [ ] Dockerfile exists in repo root (required for server inspection + tool detection)
+   - [ ] Tools/resources/prompts detected (server must be inspectable via Dockerfile)
    - [ ] No security flags
+   - [ ] Author verified (claim ownership via GitHub auth)
 
-5. Use "Sync Server" button after any updates.
+5. **Dockerfile template** (required for Glama inspection):
+   ```dockerfile
+   FROM node:22-slim
+   WORKDIR /app
+   COPY package.json package-lock.json ./
+   RUN npm ci --omit=dev
+   COPY dist/ dist/
+   ENTRYPOINT ["node", "dist/index.js"]
+   ```
+   Adjust the entry point to match your `bin` field in package.json.
+
+6. **Related servers** — if you have other MCP servers, link them in `glama.json`:
+   ```json
+   {
+     "$schema": "https://glama.ai/mcp/schemas/server.json",
+     "maintainers": ["your-github-username"],
+     "relatedServers": [
+       {
+         "name": "other-server",
+         "url": "https://glama.ai/mcp/servers/owner/other-server",
+         "description": "Brief description"
+       }
+     ]
+   }
+   ```
+
+7. Use "Sync Server" button after any updates.
 
 ### Step 3: Official MCP Registry
 
@@ -168,9 +197,14 @@ An MCP server project is **done** when:
 - [ ] All tests pass
 - [ ] `npx -y package-name` installs and runs from a clean environment
 - [ ] Published to npm
-- [ ] `glama.json` in repo, ownership claimed on Glama, score page clean
-- [ ] Listed on Official MCP Registry (`mcpName` in package.json)
-- [ ] PR submitted to awesome-mcp-servers (with Glama score badge in the entry)
-- [ ] README has IDE config snippets (minimum: Claude Code, Claude Desktop, Cursor)
 - [ ] LICENSE file in repo root
+- [ ] Dockerfile in repo root (for Glama server inspection)
+- [ ] GitHub Release created (tag matching npm version)
+- [ ] `glama.json` in repo with maintainer + related servers
+- [ ] Glama ownership claimed, scorecard all green (A A A)
+- [ ] `mcpName` in package.json, `<!-- mcp-name: ... -->` in README
+- [ ] Registered on Official MCP Registry via `mcp-publisher publish`
+- [ ] Glama **score** badge in README (not just card badge)
+- [ ] PR submitted to punkpeye/awesome-mcp-servers (with Glama score badge in the entry)
+- [ ] README has IDE config snippets (minimum: Claude Code, Claude Desktop, Cursor)
 - [ ] Community launch plan reviewed (see `launch.md`)
