@@ -1,0 +1,294 @@
+---
+name: qa
+description: Use when asked to QA, test, dogfood, or verify a web application — systematically tests pages, documents issues with screenshots, and produces a health score report
+---
+
+# QA
+
+Systematic browser QA testing for web applications. Test as a real user — click everything, fill every form, check every state. Produce a structured report with screenshot evidence.
+
+Adapted from [gstack](https://github.com/garrytan/gstack) by Garry Tan (MIT).
+
+---
+
+## Setup
+
+Find the browse binary before doing anything:
+
+```bash
+_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+B=""
+[ -n "$_ROOT" ] && [ -x "$_ROOT/.claude/skills/gstack/browse/dist/browse" ] && B="$_ROOT/.claude/skills/gstack/browse/dist/browse"
+[ -z "$B" ] && B=~/.claude/skills/gstack/browse/dist/browse
+if [ -x "$B" ]; then
+  echo "READY: $B"
+else
+  echo "NEEDS_SETUP"
+fi
+```
+
+If `NEEDS_SETUP`: tell the user to follow `stacks/browser-qa/setup.md` and stop.
+
+Create output directories:
+
+```bash
+mkdir -p .gstack/qa-reports/screenshots
+```
+
+## Arguments
+
+- `/qa` — diff-aware mode (default on feature branches)
+- `/qa https://myapp.com` — full mode on a specific URL
+- `/qa --quick` — 30-second smoke test
+- `/qa --quick https://myapp.com` — quick mode on a specific URL
+- `/qa --regression` — full mode + compare against baseline
+- `/qa --full` — force full mode even on a feature branch
+
+## Mode Selection
+
+**If on a feature branch and no URL given:** diff-aware mode (most common case — developer just shipped code and wants to verify).
+
+**If URL is given:** full mode (unless `--quick` or `--regression` specified).
+
+**If on main:** require a URL or abort.
+
+---
+
+## Diff-Aware Mode
+
+The workhorse. Scopes testing to what changed on this branch.
+
+### Step 1: Analyse the diff
+
+```bash
+git diff main...HEAD --name-only
+git log main..HEAD --oneline
+```
+
+### Step 2: Map changes to affected pages
+
+- **Route/controller files** → URL paths they serve
+- **View/template/component files** → pages that render them
+- **Model/service files** → pages that use those models (trace through controllers)
+- **CSS/style files** → pages that include those stylesheets
+- **API endpoints** → test directly with `$B js "await fetch('/api/...')"`
+
+### Step 3: Find the running app
+
+Check common dev ports:
+
+```bash
+$B goto http://localhost:3000 2>/dev/null && echo "3000" || \
+$B goto http://localhost:5173 2>/dev/null && echo "5173" || \
+$B goto http://localhost:4000 2>/dev/null && echo "4000" || \
+$B goto http://localhost:8080 2>/dev/null && echo "8080"
+```
+
+If no app found: ask the user for the URL.
+
+### Step 4: Test each affected page
+
+For each affected route:
+
+```bash
+$B goto <page-url>
+$B snapshot -i -a -o ".gstack/qa-reports/screenshots/<page-name>.png"
+$B console --errors
+```
+
+If the change was interactive (forms, buttons, flows): test the interaction end-to-end using `fill`, `click`, `snapshot -D`.
+
+### Step 5: Cross-reference with intent
+
+Read commit messages and PR description to understand what the change should do. Verify it actually does that.
+
+### Step 6: Report
+
+"N pages/routes affected by this branch. Here's what works and what doesn't."
+
+---
+
+## Full Mode
+
+Systematic exploration of every reachable page.
+
+### Step 1: Orient
+
+```bash
+$B goto <url>
+$B snapshot -i -a -o ".gstack/qa-reports/screenshots/initial.png"
+$B links
+$B console --errors
+```
+
+Detect framework (Next.js, Rails, SPA, WordPress, static) from page source. Note it in the report.
+
+### Step 2: Explore
+
+Visit every reachable page. At each page:
+
+```bash
+$B goto <page-url>
+$B snapshot -i -a -o ".gstack/qa-reports/screenshots/<page-name>.png"
+$B console --errors
+```
+
+Per-page checklist:
+1. **Visual** — layout issues, broken images, text overflow
+2. **Interactive** — click buttons, links, controls. Do they work?
+3. **Forms** — fill and submit. Test empty, invalid, edge cases
+4. **Navigation** — check all paths in and out
+5. **States** — empty state, loading, error, overflow
+6. **Console** — new JS errors after interactions?
+
+Spend more time on core features (homepage, dashboard, checkout) and less on secondary pages (about, terms).
+
+### Step 3: Document issues
+
+Document each issue immediately when found (see Issue Documentation below).
+
+---
+
+## Quick Mode
+
+30-second smoke test.
+
+1. Visit homepage + top 5 navigation targets.
+2. At each: page loads? Console errors? Broken links visible?
+3. Compute health score. No detailed issue documentation.
+
+---
+
+## Regression Mode
+
+Full mode + baseline comparison.
+
+1. Run full mode.
+2. Load `.gstack/qa-reports/baseline.json` from a previous run.
+3. Diff: issues fixed (in baseline but not current), issues new (in current but not baseline), score delta.
+4. Append regression section to the report.
+
+---
+
+## Issue Documentation
+
+Document each issue with evidence. Two tiers:
+
+**Interactive bugs** (broken flows, dead buttons, form failures):
+
+```bash
+$B screenshot ".gstack/qa-reports/screenshots/issue-NNN-before.png"
+$B click @e5
+$B screenshot ".gstack/qa-reports/screenshots/issue-NNN-after.png"
+$B snapshot -D
+```
+
+**Static bugs** (typos, layout issues, missing images):
+
+```bash
+$B snapshot -i -a -o ".gstack/qa-reports/screenshots/issue-NNN.png"
+```
+
+Each issue includes:
+- **ID:** ISSUE-001, ISSUE-002, etc.
+- **Severity:** critical / high / medium / low
+- **Category:** console / links / visual / functional / UX / performance / content / accessibility
+- **Screenshot:** path to evidence
+- **Repro steps:** numbered steps to reproduce
+- **Suggested fix:** what should change
+
+---
+
+## Health Score
+
+Weighted average across 8 categories, each scored 0-100.
+
+**Category scoring:**
+
+| Category | Weight | Starting score |
+|----------|--------|----------------|
+| Console | 15% | 0 errors=100, 1-3=70, 4-10=40, 10+=10 |
+| Links | 10% | 0 broken=100, each broken -15 |
+| Visual | 10% | 100, deduct per finding |
+| Functional | 20% | 100, deduct per finding |
+| UX | 15% | 100, deduct per finding |
+| Performance | 10% | 100, deduct per finding |
+| Content | 5% | 100, deduct per finding |
+| Accessibility | 15% | 100, deduct per finding |
+
+**Deductions per finding:** critical -25, high -15, medium -8, low -3. Minimum 0 per category.
+
+**Final score:** `Σ (category_score × weight)`
+
+---
+
+## Output
+
+### Report
+
+Save to `.gstack/qa-reports/qa-report-{domain}-{YYYY-MM-DD}.md`:
+
+```markdown
+# QA Report: {domain}
+**Date:** YYYY-MM-DD
+**Mode:** diff-aware / full / quick / regression
+**Duration:** N minutes
+**Pages tested:** N
+**Framework:** detected framework
+**Health score:** N/100
+
+## Summary
+| Severity | Count |
+|----------|-------|
+| Critical | N |
+| High | N |
+| Medium | N |
+| Low | N |
+
+## Top 3 Things to Fix
+1. ...
+2. ...
+3. ...
+
+## Issues
+### ISSUE-001: [title]
+**Severity:** high | **Category:** functional
+**Page:** /path
+**Screenshot:** screenshots/issue-001.png
+**Repro:**
+1. Navigate to /path
+2. Click the Submit button
+3. Observe: nothing happens
+**Suggested fix:** ...
+
+## Console Health
+[Aggregate console errors across all pages]
+```
+
+### Baseline
+
+Save to `.gstack/qa-reports/baseline.json` after every full or regression run:
+
+```json
+{
+  "date": "YYYY-MM-DD",
+  "url": "https://myapp.com",
+  "healthScore": 85,
+  "issues": [
+    { "id": "ISSUE-001", "title": "...", "severity": "high", "category": "functional" }
+  ]
+}
+```
+
+---
+
+## Rules
+
+1. **Repro is everything.** Every issue needs at least one screenshot.
+2. **Verify before documenting.** Retry once to confirm it's reproducible.
+3. **Never include credentials.** Write `[REDACTED]` for passwords.
+4. **Write incrementally.** Append each issue as you find it.
+5. **Never read source code.** Test as a user, not a developer.
+6. **Console after every interaction.** `$B console --errors` after every click/fill/goto.
+7. **Depth over breadth.** 5-10 well-documented issues > 20 vague descriptions.
+8. **Check `stacks/browser-qa/frameworks.md`** for framework-specific guidance after detecting the framework.
