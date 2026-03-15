@@ -91,6 +91,11 @@ Iteration loop:
 - After a major task is committed and final review is done, clear the conversation context (/clear) before starting the next task. This prevents context bleed, frees the full context window, and ensures a clean starting point. Memory files persist across clears, so institutional knowledge is retained.
 - Exception: skip the clear if the next task is tightly coupled to the one just completed (e.g., immediate follow-up fix, continuation of the same feature branch).
 
+PRE-COMMIT CHECKS
+Before committing at the end of a stage or feature:
+- Check if README.md needs updating (new tools, changed tool count, new features, changed install instructions). If the public interface changed, the README must reflect it in the same commit.
+- If the project has a `status.json` (see PUBLISHING STATE TRACKER below), update it.
+
 NEW PROJECT DEFINITION OF DONE
 Every new project must have these files before any feature work begins:
 - `LICENSE` — MIT for open source projects. Other projects: decide case-by-case with the Product Owner.
@@ -117,6 +122,26 @@ MCP servers (in addition to npm badges):
 - Glama registry card (below the badge row)
 
 Reference layout: see godot-forge or brewers-almanack README for the exact HTML pattern with `<p align="center">`.
+
+PUBLISHING STATE TRACKER
+Projects that have a publishing/distribution pipeline (MCP servers, npm packages) must maintain a `status.json` in the repo root. This file tracks what has been done so future sessions don't re-investigate or forget.
+
+Format:
+```json
+{
+  "version": "0.2.0",
+  "tools_count": 14,
+  "tests_count": 461,
+  "npm": { "published": true, "version": "0.2.0" },
+  "glama": { "listed": true, "score_badge": true, "ownership_claimed": true },
+  "mcp_registry": { "registered": true, "mcp_name": "io.github.gregario/mtg-oracle" },
+  "awesome_mcp_servers": { "pr_submitted": false, "pr_url": null },
+  "github": { "release_tag": "v0.2.0", "sponsor_enabled": true },
+  "ci": { "oidc_publishing": true, "workflow": "sync-data.yml" }
+}
+```
+
+Update this file whenever a publishing step is completed. Read it at session start to know what's already done. The file is committed to the repo.
 
 Anti-patterns:
 - Never let Supervisor Claude write large production features.
