@@ -31,6 +31,21 @@ THREE SYSTEMS
 
 IMPORTANT: /opsx:apply is deprecated for projects that use Superpowers. After OpenSpec generates tasks, DO NOT run /opsx:apply to implement them. Instead: Spec Mode → Design Mode → Execution Mode (Superpowers).
 
+IDEAS BACKLOG & BRAINSTORMING
+Before anything enters the spec pipeline, ideas live in `docs/drafts/ideas-backlog.md` (gitignored, not public).
+
+The full pipeline from idea to implementation:
+1. BACKLOG: One-liner captured in ideas-backlog.md. No commitment, just a note.
+2. BRAINSTORM (optional): Use /brainstorming skill for big or unclear ideas. Expansive thinking: "What's the real product? What's the 10-star version?" Updates the backlog entry with findings. No formal artifacts.
+3. PRODUCT TASTE (mandatory gate): Use /product-taste before /opsx:propose. Challenges the idea: premise, persona, scope. Decides expansion/hold/reduction.
+4. SPEC: /opsx:propose creates formal specs, design, and tasks.
+
+Brainstorming expands the possibility space. Product taste narrows it. Both are needed:
+- Without brainstorming, you challenge an idea that was never properly explored.
+- Without taste-gating, you spec an overexcited vision at full scope.
+
+Not every idea needs a brainstorm session. Small features go straight to product taste. But new products and big pivots benefit from brainstorming first.
+
 THREE STRICT MODES
 MODE 1 — SPEC MODE:
 - Use OpenSpec to create specs, acceptance criteria, and task files.
