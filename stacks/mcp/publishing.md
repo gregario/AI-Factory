@@ -83,9 +83,21 @@ The canonical registry at `registry.modelcontextprotocol.io`, backed by Anthropi
 
 ### Step 4: awesome-mcp-servers PR
 
-**Gate:** npm published, server works, README is solid.
+**Gate:** npm published, Glama listed with clean score, LICENSE file present.
 
-Submit a PR to [punkpeye/awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) with your server in the appropriate category.
+Submit a PR to [punkpeye/awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers).
+
+**Requirements (enforced by their bot):**
+1. Server must be listed on Glama with passing checks first
+2. The PR line must include a Glama **score** badge at the end (not the card badge):
+   ```
+   - [owner/repo](https://github.com/owner/repo) 📇 🏠 - Description. [![owner/repo MCP server](https://glama.ai/mcp/servers/OWNER/REPO/badges/score.svg)](https://glama.ai/mcp/servers/OWNER/REPO)
+   ```
+3. Entry goes in alphabetical order within the appropriate category
+4. Language icons: 📇 = TypeScript, 🐍 = Python
+5. Hosting icons: 🏠 = local/self-hosted, ☁️ = cloud
+
+**Learned the hard way:** the bot will comment asking for the Glama score badge. If you forget it, the PR stalls. Add it in the first commit.
 
 ### Step 5: Smithery (Optional)
 
@@ -158,7 +170,7 @@ An MCP server project is **done** when:
 - [ ] Published to npm
 - [ ] `glama.json` in repo, ownership claimed on Glama, score page clean
 - [ ] Listed on Official MCP Registry (`mcpName` in package.json)
-- [ ] PR submitted to awesome-mcp-servers
+- [ ] PR submitted to awesome-mcp-servers (with Glama score badge in the entry)
 - [ ] README has IDE config snippets (minimum: Claude Code, Claude Desktop, Cursor)
 - [ ] LICENSE file in repo root
 - [ ] Community launch plan reviewed (see `launch.md`)
