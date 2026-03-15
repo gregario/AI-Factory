@@ -76,6 +76,15 @@ Iteration loop:
 - After a major task is committed and final review is done, clear the conversation context (/clear) before starting the next task. This prevents context bleed, frees the full context window, and ensures a clean starting point. Memory files persist across clears, so institutional knowledge is retained.
 - Exception: skip the clear if the next task is tightly coupled to the one just completed (e.g., immediate follow-up fix, continuation of the same feature branch).
 
+NEW PROJECT DEFINITION OF DONE
+Every new project must have these files before any feature work begins:
+- `LICENSE` — MIT for open source projects. Other projects: decide case-by-case with the Product Owner.
+- `.github/FUNDING.yml` — `github: [gregario]` (inherited from gregario/.github for repos without one, but include explicitly for reliability).
+- `README.md` — project name, one-line description, install/setup, licence reference.
+- `.gitignore` — appropriate for the stack.
+- `CLAUDE.md` — project-level instructions (from template).
+The templates (`templates/ai-product-template/`, `templates/web-product/`) include all of these. If creating a project outside the templates, add them manually.
+
 Anti-patterns:
 - Never let Supervisor Claude write large production features.
 - Never use /opsx:apply for feature implementation in projects that will be implemented by Superpowers.
