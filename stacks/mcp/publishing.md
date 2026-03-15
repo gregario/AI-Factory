@@ -53,17 +53,26 @@ Glama auto-discovers servers from GitHub, but you should claim ownership.
 
 3. Find your server listing and click "Claim ownership".
 
-4. **Glama scorecard requirements** — all must pass before submitting awesome-mcp-servers PR:
-   - [ ] LICENSE file detected (must exist in repo root)
+4. **Create a Glama release** (this is NOT the same as a GitHub Release).
+   A "Glama release" is a containerised build inside Glama's own system:
+   a. Go to `https://glama.ai/mcp/servers/{owner}/{repo}/admin/dockerfile`
+   b. Configure the build spec (build steps, CMD arguments, env vars, placeholder params)
+   c. Click **Deploy** to trigger a build test
+   d. Once the build test succeeds, click **Make Release**
+   e. Enter a version number and optional changelog, click **Create & Publish Release**
+
+   Without this step, Glama shows "No release" and "Server not inspectable" regardless of what's in your GitHub repo. This is a manual step done through Glama's admin UI.
+
+5. **Glama scorecard requirements** — all must pass before submitting awesome-mcp-servers PR:
+   - [ ] LICENSE file detected
    - [ ] README quality passes
-   - [ ] GitHub Release exists (not just a git tag: `gh release create vX.Y.Z`)
-   - [ ] Dockerfile exists in repo root (required for server inspection + tool detection)
-   - [ ] Tools/resources/prompts detected (server must be inspectable via Dockerfile)
+   - [ ] Glama release created (via admin/dockerfile page, not GitHub releases)
+   - [ ] Server inspectable (Glama can start the container and detect tools)
+   - [ ] Tools detected
    - [ ] No security flags
    - [ ] Author verified (claim ownership via GitHub auth)
 
-5. **Dockerfile template** (required for Glama inspection).
-   IMPORTANT: Glama clones the repo and builds the Docker image. `dist/` is gitignored so the Dockerfile MUST build from source, not copy dist/. This is the #1 reason Glama shows "server not inspectable".
+6. **Dockerfile template** (committed to repo for reference, but the actual build is configured in Glama's admin UI).
 
    Use multi-stage build if you have native dependencies (better-sqlite3, etc.):
    ```dockerfile
@@ -225,8 +234,8 @@ An MCP server project is **done** when:
 - [ ] `npx -y package-name` installs and runs from a clean environment
 - [ ] Published to npm
 - [ ] LICENSE file in repo root
-- [ ] Dockerfile in repo root (for Glama server inspection)
-- [ ] GitHub Release created (tag matching npm version)
+- [ ] Dockerfile in repo root
+- [ ] Glama release created via admin/dockerfile page (Deploy + Make Release)
 - [ ] `glama.json` in repo with maintainer + related servers
 - [ ] Glama ownership claimed, scorecard all green (A A A)
 - [ ] `mcpName` in package.json, `<!-- mcp-name: ... -->` in README
