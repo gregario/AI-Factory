@@ -1,14 +1,14 @@
 # AI-Factory
 
-A personal AI product factory — an operating system for building software products with Claude Code as the orchestrator.
+A personal AI product factory (an operating system for building software products with Claude Code as the orchestrator).
 
 ## What This Is
 
 AI-Factory is a structured workflow for building products with AI. Instead of one monolithic Claude session doing everything, it separates concerns into three modes with distinct roles:
 
-1. **Spec Mode** (OpenSpec) — defines *what* to build. Creates specs, acceptance criteria, and task files.
-2. **Design Mode** — defines *how it looks and feels*. Produces wireframes, style tokens, mockups, and interaction specs. No production code.
-3. **Execution Mode** (Superpowers) — builds it. Implements tasks with TDD, code review, and subagent-driven development.
+1. **Spec Mode** (OpenSpec): defines *what* to build. Creates specs, acceptance criteria, and task files.
+2. **Design Mode**: defines *how it looks and feels*. Produces wireframes, style tokens, mockups, and interaction specs. No production code.
+3. **Execution Mode** (Superpowers): builds it. Implements tasks with TDD, code review, and subagent-driven development.
 
 The human is the Product Owner. Claude switches between Product Manager, Designer, and Engineer roles depending on the mode.
 
@@ -22,7 +22,7 @@ graph TB
         PO["Product Owner"]
     end
 
-    subgraph "AI Factory — CLAUDE.md"
+    subgraph "AI Factory: CLAUDE.md"
         SUP["Supervisor Claude<br/><i>Orchestrates modes</i>"]
 
         subgraph "Mode 1: Spec"
@@ -106,39 +106,39 @@ graph LR
 
 | Stack | What It Covers |
 |-------|---------------|
-| `stacks/typescript/` | TypeScript + Node.js — framework-agnostic base for any TS project |
-| `stacks/nextjs/` | Next.js App Router — Server Components, Server Actions, SSR/SSG/ISR. Layers on TypeScript |
-| `stacks/python/` | Python 3.11+ — uv, Ruff, Pydantic, pytest, AI/ML integration patterns |
-| `stacks/swift/` | Swift/iOS — SwiftUI, MVVM, structured concurrency, SwiftData |
-| `stacks/kotlin/` | Kotlin/Android — Jetpack Compose, MVVM, Coroutines, Room, Hilt |
-| `stacks/react-native/` | React Native — Expo, Expo Router, cross-platform mobile. Layers on TypeScript |
-| `stacks/godot/` | Godot 4 + GDScript — game development, GUT testing, AI asset generation |
+| `stacks/typescript/` | TypeScript + Node.js. Framework-agnostic base for any TS project |
+| `stacks/nextjs/` | Next.js App Router: Server Components, Server Actions, SSR/SSG/ISR. Layers on TypeScript |
+| `stacks/python/` | Python 3.11+: uv, Ruff, Pydantic, pytest, AI/ML integration patterns |
+| `stacks/swift/` | Swift/iOS: SwiftUI, MVVM, structured concurrency, SwiftData |
+| `stacks/kotlin/` | Kotlin/Android: Jetpack Compose, MVVM, Coroutines, Room, Hilt |
+| `stacks/react-native/` | React Native: Expo, Expo Router, cross-platform mobile. Layers on TypeScript |
+| `stacks/godot/` | Godot 4 + GDScript: game development, GUT testing, AI asset generation |
 
 ### Backend & API Stacks
 
 | Stack | What It Covers |
 |-------|---------------|
-| `stacks/node-backend/` | Express/Fastify — middleware, auth, Prisma/Drizzle. Layers on TypeScript |
-| `stacks/fastapi/` | FastAPI — Pydantic v2, async, FARM stack patterns. Layers on Python |
-| `stacks/dotnet/` | .NET 8 — Minimal APIs, EF Core, MediatR, C# 12+ |
-| `stacks/mcp/` | MCP server development — tool design, security, publishing. Layers on TypeScript |
+| `stacks/node-backend/` | Express/Fastify: middleware, auth, Prisma/Drizzle. Layers on TypeScript |
+| `stacks/fastapi/` | FastAPI: Pydantic v2, async, FARM stack patterns. Layers on Python |
+| `stacks/dotnet/` | .NET 8: Minimal APIs, EF Core, MediatR, C# 12+ |
+| `stacks/mcp/` | MCP server development: tool design, security, publishing. Layers on TypeScript |
 
 ### Database Stacks
 
 | Stack | What It Covers |
 |-------|---------------|
-| `stacks/sql/` | PostgreSQL/SQLite — schema design, migrations, RLS, indexing, connection pooling |
-| `stacks/nosql/` | MongoDB/Redis/DynamoDB — document design, caching, aggregation pipelines |
-| `stacks/vector-db/` | Pinecone/pgvector/ChromaDB — embeddings, RAG pipelines, chunking, retrieval testing |
+| `stacks/sql/` | PostgreSQL/SQLite: schema design, migrations, RLS, indexing, connection pooling |
+| `stacks/nosql/` | MongoDB/Redis/DynamoDB: document design, caching, aggregation pipelines |
+| `stacks/vector-db/` | Pinecone/pgvector/ChromaDB: embeddings, RAG pipelines, chunking, retrieval testing |
 
 ### Platform & Infrastructure Stacks
 
 | Stack | What It Covers |
 |-------|---------------|
-| `stacks/saas/` | Cloudflare + Supabase + Stripe — full SaaS stack with auth, payments, deployment |
-| `stacks/landing/` | Static sites — SEO, analytics, Astro/11ty, Cloudflare Pages |
-| `stacks/infra/` | CI/CD — GitHub Actions, Docker, Cloudflare, Railway, monitoring |
-| `stacks/browser-qa/` | Browser QA testing — headless Chromium via gstack browse |
+| `stacks/saas/` | Cloudflare + Supabase + Stripe: full SaaS stack with auth, payments, deployment |
+| `stacks/landing/` | Static sites: SEO, analytics, Astro/11ty, Cloudflare Pages |
+| `stacks/infra/` | CI/CD: GitHub Actions, Docker, Cloudflare, Railway, monitoring |
+| `stacks/browser-qa/` | Browser QA testing: headless Chromium via gstack browse |
 
 ### Meta
 
@@ -163,12 +163,12 @@ Each profile includes a `STACK.md` overview plus focused docs (coding standards,
 
 | Skill | Trigger | What It Does |
 |-------|---------|-------------|
-| `product-taste` | Before proposing features | Challenges ideas with product thinking — premise, persona, scope modes (expansion/hold/reduction) |
-| `structural-review` | Before landing code | Paranoid pre-landing audit — race conditions, trust boundaries, error handling, test gaps |
-| `ship` | When ready to ship | Automated shipping — merge, test, review, changelog, version bump, bisectable commits, PR |
-| `factory-retrospective` | Periodic check-in | Cross-project retro — velocity, quality, session patterns, trend tracking |
-| `qa` | After implementing web features | 4-mode browser QA — diff-aware, full, quick, regression. Health score + screenshots |
-| `marketing-copy` | When writing launch content | Platform-specific copy — Product Hunt, App Store, landing pages, social, README |
+| `product-taste` | Before proposing features | Challenges ideas with product thinking: premise, persona, scope modes (expansion/hold/reduction) |
+| `structural-review` | Before landing code | Paranoid pre-landing audit: race conditions, trust boundaries, error handling, test gaps |
+| `ship` | When ready to ship | Automated shipping: merge, test, review, changelog, version bump, bisectable commits, PR |
+| `factory-retrospective` | Periodic check-in | Cross-project retro: velocity, quality, session patterns, trend tracking |
+| `qa` | After implementing web features | 4-mode browser QA: diff-aware, full, quick, regression. Health score + screenshots |
+| `marketing-copy` | When writing launch content | Platform-specific copy: Product Hunt, App Store, landing pages, social, README |
 
 ### OpenSpec Skills
 
@@ -191,24 +191,24 @@ Each profile includes a `STACK.md` overview plus focused docs (coding standards,
 
 Within Execution Mode, the Engineer adopts different postures depending on the task:
 
-- **Builder** — writing new code, TDD rhythm, forward momentum
-- **Reviewer** — examining code, skeptical posture, looking for what's wrong
-- **Debugger** — investigating failures, hypothesis-driven, no guessing
-- **Shipper** — getting code landed, changelog, version, PR
+- **Builder**: writing new code, TDD rhythm, forward momentum
+- **Reviewer**: examining code, skeptical posture, looking for what's wrong
+- **Debugger**: investigating failures, hypothesis-driven, no guessing
+- **Shipper**: getting code landed, changelog, version, PR
 
 Skills activate the right posture automatically.
 
 ## Key Concepts
 
-**Three strict modes** — spec, design, and execution never mix. This prevents Claude from jumping to code before the problem is understood.
+**Three strict modes.** Spec, design, and execution never mix. This prevents Claude from jumping to code before the problem is understood.
 
-**Stack profiles as senior engineers** — rather than hoping Claude knows best practices, the stack profile tells it exactly how to write code for that technology.
+**Stack profiles as senior engineers.** Rather than hoping Claude knows best practices, the stack profile tells it exactly how to write code for that technology.
 
-**Projects are independent** — each product lives in its own git repo under `projects/`. The factory provides workflow and standards; projects own their code.
+**Projects are independent.** Each product lives in its own git repo under `projects/`. The factory provides workflow and standards; projects own their code.
 
-**Context hygiene** — clear the conversation after each major task. Memory files persist across clears, so institutional knowledge is retained without context bleed.
+**Context hygiene.** Clear the conversation after each major task. Memory files persist across clears, so institutional knowledge is retained without context bleed.
 
-**Factory retro nudge** — if 7+ days since the last retro, the factory mentions it once at session start.
+**Factory retro nudge.** If 7+ days since the last retro, the factory mentions it once at session start.
 
 ## Prerequisites
 
@@ -217,7 +217,7 @@ Skills activate the right posture automatically.
 
 ### Required Plugins
 
-AI-Factory uses Claude Code plugins for its three-mode workflow. These are **Claude Code-only** — they don't work in Cursor, VS Code, or other editors.
+AI-Factory uses Claude Code plugins for its three-mode workflow. These are **Claude Code-only** (they don't work in Cursor, VS Code, or other editors).
 
 Install them after cloning:
 
@@ -257,4 +257,4 @@ See [docs/plans/2026-03-14-roadmap.md](docs/plans/2026-03-14-roadmap.md) for pla
 
 ## License
 
-MIT — see [LICENSE](LICENSE)
+MIT. See [LICENSE](LICENSE).
