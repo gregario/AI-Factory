@@ -54,14 +54,40 @@ MODE 1 — SPEC MODE:
 
 MODE 2 — DESIGN MODE:
 - Use the Product Designer persona.
-- Produce deliverables:
-  * Layout wireframes for all screens/scenes (low-fidelity).
-  * Style tokens: color palette, typography, spacing, iconography.
-  * UI theme/config (a ThemeGen/JSON token file).
-  * Screen-by-screen mockups (static scenes or annotated screenshots).
-  * Interaction spec: animations, microinteractions, sound cues, accessibility notes.
 - Do NOT implement or write production code in this mode.
 - When design deliverables are approved, switch to Execution Mode.
+- For web projects, read `stacks/ui/STACK.md` before starting.
+
+Design Mode runs THREE sequential passes. Each pass produces distinct deliverables and informs the next. Do not skip passes or run them out of order.
+
+PASS 1 — UX ARCHITECTURE (structure & flow):
+Deliverables:
+  * Sitemap: every screen, URL paths, navigation connections, auth boundaries.
+  * User journey maps: each core task as a step-by-step flow with click counts. Apply the 3-click rule — core tasks MUST complete in 3 clicks or fewer. Flag violations and propose alternatives.
+  * Information hierarchy: per screen, classify every content element as primary (main purpose), secondary (supports primary), or tertiary (supplementary). Primary content gets the dominant visual position.
+  * Task flows: for multi-step tasks (forms, wizards, checkout), show decision points, error recovery paths, and success/failure outcomes.
+Templates: see `stacks/ui/templates/sitemap.md`, `journey-map.md`, `hierarchy-spec.md`.
+Handoff: sitemap + journey maps + hierarchy specs must exist before Pass 2 begins.
+
+PASS 2 — COMPONENT DESIGN (what goes where):
+Deliverables:
+  * Screen-to-component mapping: for each screen region, specify the shadcn/ui component (Card, DataTable, Dialog, etc.), the data it displays, and interactions it supports.
+  * 5-state design: every screen designed in 5 states — empty, loading, populated, error, overflow. Each state specifies what the user sees and what actions are available.
+  * Progressive disclosure: complex features use expandable sections or dropdown menus. Primary actions visible, secondary in DropdownMenu. Specify what's visible at first glance vs revealed on interaction.
+  * Chart specs: Recharts component type, data dimensions, responsive behavior.
+  * Icon specs: Lucide icon names, sizes, decorative vs functional purpose.
+Templates: see `stacks/ui/templates/component-mapping.md`.
+Handoff: component mapping with 5-state designs must exist before Pass 3 begins.
+
+PASS 3 — VISUAL DESIGN (how it looks & feels):
+Deliverables:
+  * Style tokens: color palette, typography, spacing, iconography (→ maps to tailwind.config.ts via `stacks/ui/tokens-to-tailwind.md`).
+  * UI theme/config (a ThemeGen/JSON token file).
+  * Screen-by-screen mockups (static scenes or annotated screenshots), now informed by the component mapping from Pass 2.
+  * Interaction spec: animations, microinteractions, sound cues, accessibility notes.
+Handoff: all deliverables from all 3 passes must exist before switching to Execution Mode.
+
+LIGHT-PASS OPTION: For small changes affecting 1-2 screens with no new navigation, compress all 3 passes into a single design document covering hierarchy, component mapping, and visual notes for the affected screens only. Use judgment — if the change touches information architecture or adds screens, use the full three-pass workflow.
 
 MODE 3 — EXECUTION MODE:
 - Use Superpowers to implement tasks, with TDD and test-driven loops.
@@ -81,15 +107,39 @@ When in Execution Mode, the Engineer adopts different postures depending on the 
   Skills: code-review, structural-review, requesting-code-review, receiving-code-review
 - DEBUGGER: Investigating failures. Hypothesis-driven. No guessing, no shotgun fixes.
   Skills: systematic-debugging
+- TESTER: Verifying the app works as a user. Browser QA posture. Evidence-driven, not code-driven.
+  Skills: qa
 - SHIPPER: Getting code landed. Changelog, version, PR. Momentum without cutting corners.
   Skills: ship, finishing-a-development-branch, verification-before-completion
 
-The key insight: each posture has a DIFFERENT relationship to the code. A builder adds, a reviewer questions, a debugger investigates, a shipper packages. Mixing postures (e.g., reviewing while building) leads to weak reviews and slow builds.
+The key insight: each posture has a DIFFERENT relationship to the code. A builder adds, a reviewer questions, a debugger investigates, a tester uses, a shipper packages. Mixing postures (e.g., reviewing while building) leads to weak reviews and slow builds.
 
 Iteration loop:
-- Spec → Design → Implement → Test → Commit → Clear Context → Repeat.
+- Spec → Design → Implement → Test → QA (web projects) → Ship → Archive specs → Clear Context → Repeat.
 - After a major task is committed and final review is done, clear the conversation context (/clear) before starting the next task. This prevents context bleed, frees the full context window, and ensures a clean starting point. Memory files persist across clears, so institutional knowledge is retained.
 - Exception: skip the clear if the next task is tightly coupled to the one just completed (e.g., immediate follow-up fix, continuation of the same feature branch).
+
+BROWSER QA GATE (web projects only)
+After unit tests pass and BEFORE committing, web projects MUST run `/qa` (diff-aware mode) to verify changes work in a real browser. This catches visual regressions, broken interactions, and console errors that unit tests miss.
+- Applies to: any project using the `web-product` template, or any project with a `framework:` declaration in its CLAUDE.md.
+- When to run: after `npm test` / `vitest run` passes, before `git commit`.
+- How: run `/qa` (auto-detects diff-aware mode on feature branches) or `/qa --quick` for minor changes.
+- Skip only if: the change is purely backend/config with zero UI impact (e.g., env var change, dependency bump).
+- The `verification-before-completion` skill should remind about `/qa` when working on a web project.
+
+OPENSPEC ARCHIVING (after shipping)
+After a feature is shipped (PR created/merged), archive completed OpenSpec changes:
+- Run `/opsx:archive` for any change whose tasks are all checked off.
+- This updates master specs in `openspec/specs/` so future sessions have accurate delivered state.
+- The `/ship` skill includes this as Step 7.5 (automatic).
+- If you skip `/ship` and commit manually, archive manually before clearing context.
+
+POST-DEPLOY VERIFICATION (web projects)
+After deployment (merge to main triggers Cloudflare auto-deploy for SaaS projects):
+- Run `/qa --quick <production-url>` to verify the deploy works.
+- Check for: page loads, no console errors, core user flow functions.
+- If the deploy is broken, revert or hotfix immediately.
+- See `stacks/saas/deployment.md` for deploy configuration and `stacks/saas/first-deploy.md` for initial setup.
 
 PRE-COMMIT CHECKS
 Before committing at the end of a stage or feature:

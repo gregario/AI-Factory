@@ -1,14 +1,22 @@
 # Project Instructions
 
-This is a web product inside the AI-Factory workspace. It follows the spec-driven workflow defined in the parent CLAUDE.md, with browser QA integrated into the iteration loop.
+This is a web product inside the AI-Factory workspace. It follows the spec-driven workflow defined in the parent CLAUDE.md, with three-pass Design Mode and browser QA integrated into the iteration loop.
 
 ## Workflow Overview
 
-This project uses three complementary tools:
+This project uses four complementary tools:
 
 - **OpenSpec** — Product thinking. Creates specs, designs changes, manages the product lifecycle.
+- **Design Mode** — Three-pass UX and visual design. Produces structural UX, component mapping, and visual specs.
 - **Superpowers** — Engineering. Implements tasks with TDD, code review, and subagent execution.
 - **Browser QA** — Quality. Tests the running app as a real user after implementation.
+
+## Stack Profiles
+
+Before implementing, read these stack profiles:
+- `stacks/typescript/STACK.md` — TypeScript conventions
+- `stacks/ui/STACK.md` — UI toolkit (shadcn/ui, Recharts, Lucide, tokens-to-tailwind pipeline)
+- `stacks/browser-qa/STACK.md` — Browser QA patterns
 
 ## Spec Mode (OpenSpec)
 
@@ -29,6 +37,28 @@ OpenSpec manages all specs in `openspec/specs/` (delivered capabilities) and `op
 ### Spec Sync Rule
 
 When returning to OpenSpec after a period of Superpowers iterations, OpenSpec must first review the current codebase to update its understanding of the product before generating new specs. Code may have evolved since the last spec was written.
+
+## Design Mode (Three-Pass)
+
+Design Mode runs three sequential passes before implementation begins. See the parent CLAUDE.md for full details.
+
+### Pass 1 — UX Architecture
+- Sitemap, user journey maps (with 3-click rule), information hierarchy, task flows.
+- Templates: `stacks/ui/templates/sitemap.md`, `journey-map.md`, `hierarchy-spec.md`
+
+### Pass 2 — Component Design
+- Screen-to-component mapping using shadcn/ui components from `stacks/ui/components.md`.
+- 5-state design per screen: empty, loading, populated, error, overflow.
+- Chart specs (Recharts), icon specs (Lucide), progressive disclosure patterns.
+- Template: `stacks/ui/templates/component-mapping.md`
+
+### Pass 3 — Visual Design
+- Style tokens (color, typography, spacing) → map to `tailwind.config.ts` via `stacks/ui/tokens-to-tailwind.md`.
+- UI theme/config, screen mockups, interaction spec.
+
+**Light-pass:** For changes affecting 1-2 screens with no new navigation, compress all 3 passes into one document.
+
+Design deliverables go in the `design/` folder.
 
 ## Execution Mode (Superpowers)
 
@@ -57,23 +87,31 @@ After implementing a task and tests pass, run `/qa` to verify the change works i
 
 <!-- Declare your framework here for framework-specific QA guidance -->
 <!-- Examples: next, rails, react, vue, angular, wordpress, static -->
-framework: <!-- fill in -->
+framework: next
 
 ## Iteration Loop
 
 ```
-Spec → Design → Implement → Test → QA → Commit → Clear → Repeat
+Spec → Design (3-pass) → Implement → Test → QA → Commit → Clear → Repeat
 ```
 
-The QA step runs after unit tests pass and before commit. It catches visual regressions, broken interactions, and console errors that tests don't cover.
+The Design step runs three passes (UX Architecture → Component Design → Visual Design) before implementation. The QA step runs after unit tests pass and before commit.
+
+## UI Toolkit Defaults
+
+- **Components:** shadcn/ui (initialize with `npx shadcn@latest init`, add components with `npx shadcn@latest add <name>`)
+- **Charts:** Recharts
+- **Icons:** Lucide React
+- **Styling:** Tailwind CSS with design tokens mapped to `tailwind.config.ts`
+- **Component directory:** `src/components/ui/` (shadcn/ui convention)
 
 ## When to Use Which
 
 | Situation | Tool |
 |---|---|
 | New product definition | OpenSpec |
-| New feature or large enhancement | OpenSpec → then Superpowers to implement |
-| Small enhancement or iteration | Superpowers directly |
+| New feature or large enhancement | OpenSpec → Design Mode → Superpowers |
+| Small enhancement or iteration | Superpowers (with light-pass design if UI-facing) |
 | Bug fix | Superpowers directly |
 | Specs and code have diverged | OpenSpec (review + update specs) |
 | Refactoring | Superpowers directly |
@@ -90,10 +128,11 @@ The QA step runs after unit tests pass and before commit. It catches visual regr
 5. Run `/qa` after tests pass on web-facing changes.
 6. Work in small iterative commits.
 7. Do not add dependencies without recording them in the architecture spec via OpenSpec.
+8. Use shadcn/ui components from `stacks/ui/components.md` — do not hand-roll UI primitives.
 
 ## File Hygiene
 
-- Do not create files outside of `/src/`, `/tests/`, `openspec/`, and `.gstack/` unless there is a clear reason.
+- Do not create files outside of `/src/`, `/tests/`, `openspec/`, `design/`, and `.gstack/` unless there is a clear reason.
 - Keep files small and focused.
 - If a spec is ambiguous or missing, raise it — do not guess.
 
@@ -101,6 +140,7 @@ The QA step runs after unit tests pass and before commit. It catches visual regr
 
 After copying this template, run:
 1. `openspec init --tools claude` to initialize the spec system.
-2. Set up browse: read `stacks/browser-qa/setup.md`.
-3. Fill in the `framework:` field above.
-4. Use `/opsx:propose` to define the product.
+2. `npx shadcn@latest init` to set up the component system.
+3. Set up browse: read `stacks/browser-qa/setup.md`.
+4. Read `stacks/ui/STACK.md` for UI toolkit conventions.
+5. Use `/opsx:propose` to define the product.

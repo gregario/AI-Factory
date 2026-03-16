@@ -60,6 +60,16 @@ and document those choices in project-level CLAUDE.md files.
 The stack covers TypeScript + Node.js patterns that apply regardless of whether you're
 building an MCP server, a REST API, a CLI tool, or a React frontend.
 
+**For web projects with a UI**, the UI toolkit stack profile (`stacks/ui/STACK.md`) layers
+on top of this one. It standardises:
+- **Component library:** shadcn/ui + Tailwind CSS + Radix UI primitives
+- **Charts:** Recharts
+- **Icons:** Lucide React
+- **Design token pipeline:** Design Mode tokens → tailwind.config.ts
+
+Read `stacks/ui/` when implementing any web frontend. The UI stack is to React projects
+what the MCP stack (`stacks/mcp/`) is to MCP server projects — a specialised layer.
+
 ---
 
 ## Project-Level Overlays

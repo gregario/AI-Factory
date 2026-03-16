@@ -69,11 +69,24 @@ Include the review summary (all severity levels) in the PR description later.
    - `package.json` (`version` field)
    - `project.godot` (`config/version`)
    - If no version file found, skip this step.
-2. Determine bump level from the diff:
-   - **PATCH** (default): bug fixes, small changes
-   - **MINOR**: 500+ lines changed, new features — auto-apply but mention it
-   - **MAJOR**: breaking changes — always ask the user for confirmation before applying
-3. Apply the version bump to the detected file. Do not commit yet (included in step 7).
+2. Determine bump level from the diff and commit messages:
+   - **PATCH** (default): bug fixes, small changes, refactoring
+   - **MINOR**: new features (commits with `feat:` prefix), significant new functionality, 500+ lines of new code
+   - **MAJOR**: breaking changes (commits mentioning "breaking", API changes that break callers)
+3. For **MINOR** bumps: use AskUserQuestion to confirm. Present: "This looks like a MINOR bump (new features). A) MINOR (x.Y.0), B) PATCH (x.y.Z), C) MAJOR (X.0.0)". Default to A.
+4. For **MAJOR** bumps: always ask for confirmation before applying.
+5. Apply the version bump to the detected file. Do not commit yet (included in step 7).
+
+### Step 5.5: Update status.json (if exists)
+
+If the project has a `status.json` in its root (used by MCP servers and npm packages to track publishing state):
+
+1. Read the current `status.json`.
+2. Update the `version` field to match the new version from step 5.
+3. Update `tests_count` if test output from step 3 includes a count.
+4. Update `tools_count` if the diff changed tool definitions (check for tool registration patterns).
+5. Do not modify publishing state fields (npm, glama, mcp_registry, etc.) — those are updated when publishing actually happens.
+6. Do not commit yet (included in step 7).
 
 ### Step 6: Changelog
 
@@ -117,6 +130,20 @@ Only the **final commit** gets the co-author trailer:
 ```
 Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
 ```
+
+### Step 7.5: OpenSpec archiving
+
+If the project has OpenSpec changes (`openspec/changes/` exists and contains non-empty change directories):
+
+1. Check for completed changes: `ls openspec/changes/`
+2. For each change directory, check if its `tasks.md` has all tasks checked (`- [x]`).
+3. For fully completed changes, run: `cd <project-dir> && openspec archive-change "<change-name>"`
+4. If no tasks.md exists or tasks aren't all checked, skip archiving for that change.
+5. If archiving produces file changes, include them in the version+changelog commit (step 7).
+
+This prevents spec drift — completed changes get archived into master specs so future sessions know what's been delivered.
+
+If no `openspec/changes/` directory exists, skip this step entirely.
 
 ### Step 8: Push + PR
 

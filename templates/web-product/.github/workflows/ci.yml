@@ -1,0 +1,56 @@
+# CI — Build & Test Verification
+#
+# Cloudflare Pages handles deployment automatically on push to main.
+# This workflow only verifies that the code builds and tests pass.
+#
+# On PRs: runs lint, tests, and build as required status checks.
+# On push to main: same verification (Cloudflare deploys separately).
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint, Test & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      # Build verification — ensures the OpenNext/Next.js build succeeds.
+      # Cloudflare Pages runs its own build on deploy; this catches errors early.
+      - name: Build
+        run: npx opennext build
+        env:
+          # Stub out required env vars so the build doesn't fail on missing secrets.
+          # These are not real values — just enough to satisfy Next.js build-time checks.
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+          NEXT_PUBLIC_APP_URL: https://placeholder.example.com
