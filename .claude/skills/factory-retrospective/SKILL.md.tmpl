@@ -22,7 +22,7 @@ Parse the argument to determine `WINDOW_DAYS` (7, 14, or 30) and whether compare
 
 ## Execution
 
-Follow these 9 steps in order. Use `bash` for all git operations.
+Follow these 10 steps in order. Use `bash` for all git operations.
 
 ### Rules
 
@@ -154,7 +154,28 @@ If no prior retro exists, say: "First retro — no prior data for comparison. Tr
 
 ---
 
-### Step 8: Save Snapshot
+### Step 8: Skill Health
+
+Scan `.context/skill-reports/*.md` for reports within the retro window.
+
+If reports exist:
+1. Parse each report's frontmatter (date, rating, skill name from filename)
+2. Group by skill name
+3. Report:
+   - **Average rating per skill** over the window
+   - **Total report count** per skill
+   - **Skills with 3+ reports** flagged as needing attention
+   - **Top "what would make this a 10" themes** across all reports (look for common patterns)
+
+Present as a table:
+| Skill | Reports | Avg Rating | Key Theme |
+|-------|---------|------------|-----------|
+
+If no reports exist, state: "No contributor mode reports filed this period." and move on.
+
+---
+
+### Step 9: Save Snapshot
 
 {{ARTIFACT_SAVE}}
 
@@ -193,7 +214,7 @@ Schema:
 
 ---
 
-### Step 9: Narrative Output
+### Step 10: Narrative Output
 
 Structure the output as follows:
 
@@ -211,11 +232,13 @@ Structure the output as follows:
 
 7. **Quality signals** (from Step 6).
 
-8. **3 Wins** — Specific accomplishments anchored in the data. Not generic praise. Reference actual commit messages, LOC counts, or project names.
+8. **Skill health** (from Step 8) — table or "no reports" note.
 
-9. **3 Improvements** — Candid, specific suggestions based on the data. If test ratio is low, say so. If sessions are all micro, suggest deeper focus blocks. If streak broke, note when.
+9. **3 Wins** — Specific accomplishments anchored in the data. Not generic praise. Reference actual commit messages, LOC counts, or project names.
 
-10. **3 Habits** — Actionable habits for the next window. Tied to the improvements.
+10. **3 Improvements** — Candid, specific suggestions based on the data. If test ratio is low, say so. If sessions are all micro, suggest deeper focus blocks. If streak broke, note when.
+
+11. **3 Habits** — Actionable habits for the next window. Tied to the improvements.
 
 **Tone**: Encouraging but candid. Every statement should be anchored in data from the analysis. Skip generic praise like "great job!" — be specific. Target ~1500-2500 words for the full output.
 
