@@ -29,7 +29,7 @@ If notes exist, present them and ask:
 
 > "Your backlog already has competitive notes for this idea: [notes]. Want to run a full competition review anyway, or skip to product-taste?"
 
-If the user skips, stop here.
+If the user skips, suggest: "Run `/product-taste` when ready — the backlog notes will serve as your competitive context." Then stop.
 
 ### Step 2: Identify Project Type
 
@@ -61,7 +61,9 @@ Run each query using **WebSearch**. For each result:
 - How mature they are (downloads, stars, last updated)
 - Obvious strengths and weaknesses
 
-Aim for 3-8 competitors. If you find 0, broaden search terms once. If still 0, that's a finding (blue ocean).
+Aim for 3-8 competitors. If you find more than 8, table the top 8 by maturity/relevance and note the rest in a single "N+ others" row. If you find 0, broaden search terms once. If still 0, that's a finding (blue ocean).
+
+Note: WebSearch results may not include download counts or star counts. That's fine — use whatever maturity signals are visible (npm listing, registry presence, last update date, repo activity). Don't spend time visiting individual pages for metrics.
 
 ### Step 5: Synthesize Competition Brief
 
