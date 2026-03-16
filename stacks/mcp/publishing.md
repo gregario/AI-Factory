@@ -56,12 +56,31 @@ Glama auto-discovers servers from GitHub, but you should claim ownership.
 4. **Create a Glama release** (this is NOT the same as a GitHub Release).
    A "Glama release" is a containerised build inside Glama's own system:
    a. Go to `https://glama.ai/mcp/servers/{owner}/{repo}/admin/dockerfile`
-   b. Configure the build spec (build steps, CMD arguments, env vars, placeholder params)
+   b. Configure the build spec using the **Glama Form Field Reference** below
    c. Click **Deploy** to trigger a build test
    d. Once the build test succeeds, click **Make Release**
    e. Enter a version number and optional changelog, click **Create & Publish Release**
 
    Without this step, Glama shows "No release" and "Server not inspectable" regardless of what's in your GitHub repo. This is a manual step done through Glama's admin UI.
+
+   **Glama Form Field Reference (oracle-pattern / TypeScript MCP servers):**
+
+   | Field | Value | Notes |
+   |-------|-------|-------|
+   | Node.js version | `22` | **Must be 22 (LTS).** Never 24/25 — native addons like `better-sqlite3` lack prebuilt binaries on bleeding-edge Node. |
+   | Python version | *(leave empty)* | Not needed for TypeScript servers. |
+   | Build steps | `["npm install", "npm run build"]` | **Must use `npm`, not `pnpm`.** pnpm mishandles native addon compilation. |
+   | CMD arguments | `["node", "dist/server.js"]` | Glama auto-prepends `mcp-proxy --`. Adjust path to match your `bin` field. |
+   | Env vars JSON schema | `{"properties":{},"required":[],"type":"object"}` | Empty for zero-config servers. |
+   | Placeholder parameters | `{}` | Leave empty if no env vars needed to start. |
+   | Pinned commit SHA | *(leave empty)* | Uses latest commit. Only pin for debugging. |
+
+   **Pre-deploy checklist (verify BEFORE clicking Deploy):**
+   - [ ] SQLite/data files are tracked in git (not gitignored) — Glama clones the repo, gitignored files won't exist
+   - [ ] No `prepare` script in package.json — use `prepublishOnly` instead (`prepare` runs during `npm install` and breaks Glama auto-detection)
+   - [ ] `build` script copies data files to `dist/` directory
+   - [ ] Entry point has shebang `#!/usr/bin/env node`
+   - [ ] Build steps field shows `["npm install", "npm run build"]` (not `["node", "dist/server.js"]` — that means auto-detect failed)
 
 5. **Add Glama score badge to README** — use the inline score badge in the pill row (NOT the card badge):
    ```html
