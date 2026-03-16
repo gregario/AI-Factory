@@ -102,6 +102,27 @@ If it moves away, flag it clearly. If it moves toward, confirm alignment.
 
 This paragraph is ready to be handed to `/opsx:propose` as the input description.
 
+Save the brief to `docs/drafts/YYYY-MM-DD-<idea-slug>-product-taste-brief.md` with this format:
+
+```markdown
+# Product Taste Brief: [Idea Name]
+
+**Date:** YYYY-MM-DD
+**Pipeline stage:** Product Taste (pre-spec)
+**Mode:** [Expansion / Hold / Reduction]
+**Verdict:** Approved
+
+## Sharpened Brief
+
+[The tight paragraph — problem, persona, scope, vision alignment]
+
+## Key Decisions
+
+- [Bullet points of the most important choices made during the taste session]
+```
+
+This creates an auditable record and ensures the next session can pick up exactly where this one left off — the brief is the input to `/opsx:propose`.
+
 Present it to the user and ask: "Ready to propose this, or want to adjust?"
 
 **If the idea is killed or shelved** — write a graveyard entry to `docs/drafts/ideas-graveyard.md` using this format:

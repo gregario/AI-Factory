@@ -93,7 +93,26 @@ Produce the brief in this format:
 [One of: "Clear lane", "Contested but winnable — [reason]", "Crowded — product-taste should scrutinize hard"]
 ```
 
-### Step 6: Present and Hand Off
+### Step 6: Save the Brief
+
+Save the competition brief as a dated markdown file in `docs/drafts/`:
+
+```
+docs/drafts/YYYY-MM-DD-<idea-slug>-competition-brief.md
+```
+
+Include a frontmatter header:
+```
+# Competition Brief: [Idea Name]
+
+**Date:** YYYY-MM-DD
+**Pipeline stage:** Competition Review (pre-product-taste)
+**Market density:** [Blue ocean / Contested / Red ocean]
+```
+
+This creates an auditable record of the competitive landscape at the time the idea was evaluated. Each pipeline stage (brainstorm, competition review, product taste, spec) should leave an artifact in `docs/drafts/` or `openspec/`.
+
+### Step 7: Present and Hand Off
 
 Present the brief to the user. Ask:
 

@@ -157,6 +157,12 @@ Before committing at the end of a stage or feature:
 - Check if README.md needs updating (new tools, changed tool count, new features, changed install instructions). If the public interface changed, the README must reflect it in the same commit.
 - If the project has a `status.json` (see PUBLISHING STATE TRACKER below), update it.
 
+NEW PROJECT LIFECYCLE
+Projects go through: local scaffold → spec → design → execution → GitHub repo → ship.
+- `git init` happens at scaffold time (when the project directory is created from a template). This gives local version control for specs and design artifacts.
+- GitHub repo creation happens at the START of Execution Mode — when there's real code to push. Not before. Specs and design artifacts live locally until then.
+- At GitHub repo creation: `gh repo create`, push initial commit (scaffold + specs + design), then begin implementation on a feature branch.
+
 NEW PROJECT DEFINITION OF DONE
 Every new project must have these files before any feature work begins:
 - `LICENSE` — MIT for open source projects. Other projects: decide case-by-case with the Product Owner.
