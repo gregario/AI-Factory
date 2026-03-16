@@ -19,3 +19,6 @@ docs/plans/projects/
 
 # Skill contributor-mode reports (ephemeral feedback, not tracked)
 .context/skill-reports/*.md
+
+# Skill eval results (machine-specific, regenerated on demand)
+.context/skill-evals/*.json
