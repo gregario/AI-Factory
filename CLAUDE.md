@@ -186,9 +186,22 @@ npm packages (MCP servers, CLI tools, libraries):
 
 MCP servers (in addition to npm badges):
 - MCP Compatible badge: `[![MCP Compatible](https://img.shields.io/badge/MCP-compatible-purple.svg)](https://modelcontextprotocol.io)`
-- Glama registry card (below the badge row)
+- Glama score badge (inline, in the same pill row — NOT the card): `<a href="https://glama.ai/mcp/servers/gregario/{repo}"><img src="https://glama.ai/mcp/servers/gregario/{repo}/badges/score.svg" alt="{repo} MCP server"></a>`
 
-Reference layout: see godot-forge or brewers-almanack README for the exact HTML pattern with `<p align="center">`.
+Example MCP server badge row:
+```html
+<p align="center">
+  <a href="https://www.npmjs.com/package/{pkg}"><img src="https://img.shields.io/npm/v/{pkg}.svg" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/{pkg}"><img src="https://img.shields.io/npm/dm/{pkg}.svg" alt="npm downloads"></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg" alt="Node.js 18+"></a>
+  <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-compatible-purple.svg" alt="MCP Compatible"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
+  <a href="https://github.com/sponsors/gregario"><img src="https://img.shields.io/badge/sponsor-♥-ea4aaa.svg" alt="Sponsor"></a>
+  <a href="https://glama.ai/mcp/servers/gregario/{repo}"><img src="https://glama.ai/mcp/servers/gregario/{repo}/badges/score.svg" alt="{repo} MCP server"></a>
+</p>
+```
+
+Reference layout: see 3dprint-oracle README for the exact pattern.
 
 PUBLISHING STATE TRACKER
 Projects that have a publishing/distribution pipeline (MCP servers, npm packages) must maintain a `status.json` in the repo root. This file tracks what has been done so future sessions don't re-investigate or forget.
