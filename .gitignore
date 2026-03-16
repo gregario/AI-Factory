@@ -1,6 +1,9 @@
 # Project repos are independent — not tracked by the factory repo
 projects/
 
+# Node
+node_modules/
+
 # macOS
 .DS_Store
 
