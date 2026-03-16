@@ -147,6 +147,21 @@ For servers that wrap databases, consider using a test database (per the TypeScr
 
 ---
 
+## Integration Testing (MCP QA Gate)
+
+Unit tests with InMemoryTransport verify tool logic. The **MCP QA gate** (`/mcp-qa`) verifies the server works end-to-end as a real stdio process — the way Claude Desktop or Claude Code would actually use it.
+
+Run `/mcp-qa` after unit tests pass, before committing. It:
+- Builds the server and spawns it as a real child process
+- Connects an MCP client via stdio transport
+- Exercises every tool with representative inputs
+- Lints source code against MCP stack best practices
+- Produces a health score report
+
+This is mandatory in the iteration loop for MCP server projects (see CLAUDE.md "MCP QA GATE").
+
+---
+
 ## MCP Inspector for Manual Testing
 
 Use the Inspector during development for interactive exploration:

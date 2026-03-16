@@ -107,15 +107,15 @@ When in Execution Mode, the Engineer adopts different postures depending on the 
   Skills: code-review, structural-review, requesting-code-review, receiving-code-review
 - DEBUGGER: Investigating failures. Hypothesis-driven. No guessing, no shotgun fixes.
   Skills: systematic-debugging
-- TESTER: Verifying the app works as a user. Browser QA posture. Evidence-driven, not code-driven.
-  Skills: qa
+- TESTER: Verifying the app works as a user. Browser QA posture (web) or MCP client posture (MCP servers). Evidence-driven, not code-driven.
+  Skills: qa, mcp-qa
 - SHIPPER: Getting code landed. Changelog, version, PR. Momentum without cutting corners.
   Skills: ship, finishing-a-development-branch, verification-before-completion
 
 The key insight: each posture has a DIFFERENT relationship to the code. A builder adds, a reviewer questions, a debugger investigates, a tester uses, a shipper packages. Mixing postures (e.g., reviewing while building) leads to weak reviews and slow builds.
 
 Iteration loop:
-- Spec → Design → Implement → Test → QA (web projects) → Ship → Archive specs → Clear Context → Repeat.
+- Spec → Design → Implement → Test → QA (web projects) / MCP QA (MCP servers) → Ship → Archive specs → Clear Context → Repeat.
 - After a major task is committed and final review is done, clear the conversation context (/clear) before starting the next task. This prevents context bleed, frees the full context window, and ensures a clean starting point. Memory files persist across clears, so institutional knowledge is retained.
 - Exception: skip the clear if the next task is tightly coupled to the one just completed (e.g., immediate follow-up fix, continuation of the same feature branch).
 
@@ -126,6 +126,14 @@ After unit tests pass and BEFORE committing, web projects MUST run `/qa` (diff-a
 - How: run `/qa` (auto-detects diff-aware mode on feature branches) or `/qa --quick` for minor changes.
 - Skip only if: the change is purely backend/config with zero UI impact (e.g., env var change, dependency bump).
 - The `verification-before-completion` skill should remind about `/qa` when working on a web project.
+
+MCP QA GATE (MCP server projects only)
+After unit tests pass and BEFORE committing, MCP server projects MUST run `/mcp-qa` to verify the server works end-to-end. This spawns the actual server as a stdio process, connects a real MCP client, exercises every tool, and lints against MCP stack best practices. It catches integration bugs, broken tool handlers, and standards violations that unit tests miss.
+- Applies to: any project using `@modelcontextprotocol/sdk` or following the `stacks/mcp/` stack.
+- When to run: after `npm test` / `vitest run` passes, before `git commit`.
+- How: run `/mcp-qa` (full) or `/mcp-qa --quick` for minor changes.
+- Skip only if: the change is purely docs/config with zero tool impact (e.g., README update, CI config).
+- The `verification-before-completion` skill should remind about `/mcp-qa` when working on an MCP project.
 
 OPENSPEC ARCHIVING (after shipping)
 After a feature is shipped (PR created/merged), archive completed OpenSpec changes:

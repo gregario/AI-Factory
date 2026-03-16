@@ -33,7 +33,7 @@ graph LR
     C --> D["Design<br/><i>3-pass</i>"]
     D --> E["Build<br/><i>TDD</i>"]
     E --> F["Test"]
-    F --> G["QA<br/><i>browser</i>"]
+    F --> G["QA<br/><i>browser / MCP</i>"]
     G --> H["Ship<br/><i>PR</i>"]
     H --> I["Deploy"]
     I --> J["Verify<br/><i>prod QA</i>"]
@@ -91,7 +91,7 @@ Within Execution Mode, the Engineer adopts different mindsets depending on the t
 | **Builder** | Adds new code. TDD rhythm, forward momentum. | `test-driven-development`, `writing-plans`, `executing-plans` |
 | **Reviewer** | Questions existing code. Skeptical, looking for what's wrong. | `code-review`, `structural-review` |
 | **Debugger** | Investigates failures. Hypothesis-driven, no guessing. | `systematic-debugging` |
-| **Tester** | Uses the app as a real user. Evidence-driven, not code-driven. | `qa` (browser QA) |
+| **Tester** | Uses the app as a real user. Evidence-driven, not code-driven. | `qa` (browser QA), `mcp-qa` (MCP servers) |
 | **Shipper** | Gets code landed. Changelog, version, PR. No corners cut. | `ship`, `finishing-a-development-branch` |
 
 A builder adds, a reviewer questions, a debugger investigates, a tester uses, a shipper packages. Mixing postures weakens all of them.
@@ -127,7 +127,7 @@ graph TB
 
     subgraph "Knowledge Layer"
         ST["20 Stack Profiles"]
-        SK["10 Skills"]
+        SK["11 Skills"]
         TM["3 Templates"]
     end
 
@@ -203,7 +203,7 @@ graph TB
 
 ## Skills
 
-10 custom skills extend the factory workflow:
+11 custom skills extend the factory workflow:
 
 | Skill | When | What It Does |
 |-------|------|-------------|
@@ -211,6 +211,7 @@ graph TB
 | `structural-review` | Before landing code | Paranoid audit: race conditions, trust boundaries, error handling, test gaps |
 | `ship` | When ready to ship | Merge, test, review, changelog, version bump, OpenSpec archive, PR |
 | `qa` | After implementing web features | 4-mode browser QA: diff-aware, full, quick, regression. Health score + screenshots |
+| `mcp-qa` | After implementing MCP server features | End-to-end MCP integration test: spawn server, connect client, exercise tools, lint best practices. Health score |
 | `factory-retrospective` | Periodic check-in | Cross-project retro: velocity, quality, session patterns, trend tracking |
 | `marketing-copy` | When writing launch content | Platform-specific copy: Product Hunt, App Store, landing pages, social |
 | `openspec-propose` | Starting a new feature | Propose a change with all artifacts (proposal, design, specs, tasks) |
