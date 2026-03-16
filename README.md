@@ -28,7 +28,8 @@ The factory handles everything between "I have an idea" and "it's live on the in
 
 ```mermaid
 graph LR
-    A["Idea"] --> B["Product Taste<br/><i>challenge it</i>"]
+    A["Idea"] --> AB["Competition Review<br/><i>map landscape</i>"]
+    AB --> B["Product Taste<br/><i>challenge it</i>"]
     B --> C["Spec<br/><i>/opsx:propose</i>"]
     C --> D["Design<br/><i>3-pass</i>"]
     D --> E["Build<br/><i>TDD</i>"]
@@ -40,6 +41,7 @@ graph LR
     J --> K["Archive<br/><i>specs</i>"]
     K -->|"next task"| C
 
+    style AB fill:#4a5d7a,color:#fff
     style B fill:#6b3d7a,color:#fff
     style C fill:#2d4a7a,color:#fff
     style D fill:#5a3d7a,color:#fff
@@ -127,7 +129,7 @@ graph TB
 
     subgraph "Knowledge Layer"
         ST["20 Stack Profiles"]
-        SK["11 Skills"]
+        SK["12 Skills"]
         TM["3 Templates"]
     end
 
@@ -203,10 +205,11 @@ graph TB
 
 ## Skills
 
-11 custom skills extend the factory workflow:
+12 custom skills extend the factory workflow:
 
 | Skill | When | What It Does |
 |-------|------|-------------|
+| `competition-review` | Before product-taste | Maps competitive landscape: domain-aware web search, gap analysis, differentiation angle |
 | `product-taste` | Before proposing features | Challenges ideas: premise, persona, scope modes (expansion/hold/reduction) |
 | `structural-review` | Before landing code | Paranoid audit: race conditions, trust boundaries, error handling, test gaps |
 | `ship` | When ready to ship | Merge, test, review, changelog, version bump, OpenSpec archive, PR |
@@ -237,7 +240,7 @@ graph TB
 
 **Projects are independent.** Each product lives in its own git repo under `projects/`. The factory provides workflow and standards; projects own their code.
 
-**End-to-end pipeline.** From idea to deployed product: product taste → spec → design → build → test → QA → ship → deploy → verify → archive. Every step is covered.
+**End-to-end pipeline.** From idea to deployed product: competition review → product taste → spec → design → build → test → QA → ship → deploy → verify → archive. Every step is covered.
 
 **Context hygiene.** Clear the conversation after each major task. Memory files persist across clears, so institutional knowledge is retained without context bleed.
 
@@ -304,6 +307,12 @@ See [docs/drafts/factory-control-plane-vision.md](docs/drafts/factory-control-pl
 See [docs/plans/2026-03-14-roadmap.md](docs/plans/2026-03-14-roadmap.md).
 
 **Completed:** Bucket 1 (workflow skills), Bucket 2 (browser QA + web support). Bucket 3 (control plane, analytics) in progress.
+
+## Acknowledgments
+
+- [gstack](https://github.com/garrytan/gstack) by Garry Tan — the `qa`, `structural-review`, `ship`, `product-taste`, and `factory-retrospective` skills were adapted from gstack's workflows
+- [OpenSpec](https://www.npmjs.com/package/@fission-ai/openspec) by Fission AI — powers the spec pipeline (`/opsx:propose`, `/opsx:explore`, `/opsx:archive`)
+- [Superpowers](https://www.npmjs.com/package/superpowers), [Code Review](https://www.npmjs.com/package/code-review), and [Commit Commands](https://www.npmjs.com/package/commit-commands) by claude-plugins-official — engineering execution, PR review, and git automation
 
 ## License
 
