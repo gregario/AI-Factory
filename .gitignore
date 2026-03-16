@@ -16,3 +16,6 @@ docs/drafts/
 # Downstream project plans (private ideas, not shared)
 docs/plans/projects/
 .gstack/
+
+# Skill contributor-mode reports (ephemeral feedback, not tracked)
+.context/skill-reports/*.md
