@@ -37,15 +37,17 @@ Before anything enters the spec pipeline, ideas live in `docs/drafts/ideas-backl
 The full pipeline from idea to implementation:
 1. BACKLOG: One-liner captured in ideas-backlog.md. No commitment, just a note.
 2. BRAINSTORM (optional): Use /brainstorming skill for big or unclear ideas. Expansive thinking: "What's the real product? What's the 10-star version?" Updates the backlog entry with findings. No formal artifacts.
-3. PRODUCT TASTE (mandatory gate): Use /product-taste before /opsx:propose. Challenges the idea: premise, persona, scope. Decides expansion/hold/reduction.
+3. COMPETITION REVIEW (recommended): Use /competition-review to map the competitive landscape. Web-searches domain-specific channels, produces a competition brief with gap analysis. Skippable if backlog already has competitive notes.
+4. PRODUCT TASTE (mandatory gate): Use /product-taste before /opsx:propose. Challenges the idea: premise, persona, scope. Decides expansion/hold/reduction. Uses competition brief as input context when available.
    - **Off-ramp → Graveyard**: If product-taste kills or shelves the idea, write an entry to `docs/drafts/ideas-graveyard.md` (gitignored). Format: idea name, date, one-liner, "Killed because", "Salvageable kernel". Check the graveyard before evaluating new ideas — avoid re-investigating dead concepts.
-4. SPEC: /opsx:propose creates formal specs, design, and tasks.
+5. SPEC: /opsx:propose creates formal specs, design, and tasks.
 
-Brainstorming expands the possibility space. Product taste narrows it. Both are needed:
+Brainstorming expands the possibility space. Competition review maps it. Product taste narrows it. All three are needed:
 - Without brainstorming, you challenge an idea that was never properly explored.
+- Without competition review, you evaluate an idea blind to what already exists.
 - Without taste-gating, you spec an overexcited vision at full scope.
 
-Not every idea needs a brainstorm session. Small features go straight to product taste. But new products and big pivots benefit from brainstorming first.
+Not every idea needs all steps. Small features skip brainstorming and competition review, going straight to product taste. But new products and big pivots benefit from the full pipeline.
 
 THREE STRICT MODES
 MODE 1 — SPEC MODE:
