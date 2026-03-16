@@ -1,0 +1,7 @@
+{
+  "name": "test-project",
+  "private": true,
+  "scripts": {
+    "test": "echo 'no tests configured'"
+  }
+}
