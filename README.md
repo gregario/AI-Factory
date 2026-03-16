@@ -249,6 +249,19 @@ For web projects, install [gstack browse](https://github.com/garrytan/gstack) fo
    - Web: `cp -r templates/web-product projects/your-project`
 5. Start with `/opsx:propose "your idea"` to enter Spec Mode
 
+## Vision: Factory Control Plane
+
+The factory currently runs as independent Claude Code sessions — one per project, orchestrated by the human switching between terminals. The next evolution is a **control plane** that sits above project sessions:
+
+- **Knows** what each project agent is doing, what's blocked, what just finished
+- **Surfaces** only decisions that need human attention (not raw data)
+- **Routes** information by type: alerts (blocking), notifications (state changes), status (heartbeats), logs (stored for drill-down)
+- **Translates** operator commands ("publish it") into session-level actions
+
+Three possible interfaces under consideration: chat app (Slack/Discord) for push notifications and async steering, frontend dashboard for glanceable mission control with analytics, and CLI for scripting and automation.
+
+See [docs/drafts/factory-control-plane-vision.md](docs/drafts/factory-control-plane-vision.md) for the full vision document.
+
 ## Roadmap
 
 See [docs/plans/2026-03-14-roadmap.md](docs/plans/2026-03-14-roadmap.md) for planned enhancements.
