@@ -94,7 +94,7 @@ If it moves away, flag it clearly. If it moves toward, confirm alignment.
 
 ### 7. Output
 
-Produce a **sharpened brief** — one tight paragraph that captures:
+**If the idea survives** — produce a **sharpened brief** — one tight paragraph that captures:
 - The problem (from Step 2)
 - The persona (from Step 3)
 - The scope and mode (from Steps 4-5)
@@ -103,6 +103,17 @@ Produce a **sharpened brief** — one tight paragraph that captures:
 This paragraph is ready to be handed to `/opsx:propose` as the input description.
 
 Present it to the user and ask: "Ready to propose this, or want to adjust?"
+
+**If the idea is killed or shelved** — write a graveyard entry to `docs/drafts/ideas-graveyard.md` using this format:
+
+```markdown
+## Idea Name (YYYY-MM-DD)
+One-line description of the idea.
+**Killed because**: The sharpened reasoning — what specifically made this not worth pursuing.
+**Salvageable kernel**: Any interesting threads worth remembering if a related idea comes up later. "None" if truly dead.
+```
+
+This is the off-ramp. Killed ideas get documented so future sessions can check the graveyard before re-investigating dead concepts. The graveyard file is gitignored (lives in `docs/drafts/`) — only the mechanics are public, not the ideas.
 
 ---
 
