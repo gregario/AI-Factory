@@ -37,6 +37,8 @@ git diff origin/main --stat
 git diff origin/main
 ```
 
+If `git fetch` fails (no remote, no network), fall back to the local `main` branch: use `git diff main` instead of `git diff origin/main`.
+
 Read the full diff into context. Also read any new or substantially changed files in full (not just the diff hunks) so you understand surrounding code.
 
 ## Step 3 — Two-Pass Review

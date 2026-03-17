@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import Anthropic from "@anthropic-ai/sdk";
+import { execSync } from "child_process";
 import { readdirSync, readFileSync, writeFileSync, mkdirSync } from "fs";
 import { join, resolve, dirname } from "path";
 
@@ -29,10 +29,31 @@ Score it on three dimensions, each 1-5:
 Return ONLY valid JSON (no markdown, no explanation):
 {"clarity": N, "completeness": N, "actionability": N, "notes": "brief observation"}`;
 
+function judgeSkill(skillContent: string): EvalResult["clarity"] & Record<string, unknown> {
+  const prompt = `${JUDGE_PROMPT}\n\n---\n\n${skillContent}`;
+  const escaped = prompt.replace(/'/g, "'\\''");
+  const result = execSync(
+    `claude -p '${escaped}' --output-format json`,
+    {
+      timeout: 120_000,
+      encoding: "utf-8",
+      env: { ...process.env, CLAUDE_NO_HOOKS: "1" }
+    }
+  );
+
+  // claude --output-format json returns { result: "..." }
+  const outer = JSON.parse(result);
+  const text = typeof outer.result === "string" ? outer.result : result;
+
+  // Extract JSON from the response (may be wrapped in markdown fences)
+  const jsonMatch = text.match(/\{[\s\S]*?"clarity"[\s\S]*?\}/);
+  if (!jsonMatch) throw new Error(`No JSON found in response: ${text.slice(0, 200)}`);
+  return JSON.parse(jsonMatch[0]);
+}
+
 describe.skipIf(SKIP)("Tier 3: LLM-as-judge", () => {
 
-  test("all skills score >= 4.0 average", async () => {
-    const client = new Anthropic();
+  test("all skills score >= 4.0 average", () => {
     const today = new Date().toISOString().split("T")[0];
     const results: EvalResult[] = [];
 
@@ -44,16 +65,7 @@ describe.skipIf(SKIP)("Tier 3: LLM-as-judge", () => {
       const skillPath = join(SKILLS_DIR, skill, "SKILL.md");
       const content = readFileSync(skillPath, "utf-8");
 
-      const response = await client.messages.create({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 256,
-        messages: [
-          { role: "user", content: `${JUDGE_PROMPT}\n\n---\n\n${content}` }
-        ]
-      });
-
-      const text = response.content[0].type === "text" ? response.content[0].text : "";
-      const scores = JSON.parse(text);
+      const scores = judgeSkill(content);
 
       const result: EvalResult = {
         skill,
@@ -66,6 +78,7 @@ describe.skipIf(SKIP)("Tier 3: LLM-as-judge", () => {
       };
 
       results.push(result);
+      console.log(`  ${skill}: ${result.average.toFixed(1)} (C:${scores.clarity} Co:${scores.completeness} A:${scores.actionability})`);
     }
 
     // Save results
@@ -77,5 +90,5 @@ describe.skipIf(SKIP)("Tier 3: LLM-as-judge", () => {
     for (const result of results) {
       expect(result.average).toBeGreaterThanOrEqual(4.0);
     }
-  }, 300_000); // 5 minute timeout for all API calls
+  }, 600_000); // 10 minute timeout — sequential claude -p calls
 });

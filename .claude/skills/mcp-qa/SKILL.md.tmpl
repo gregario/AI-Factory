@@ -54,7 +54,7 @@ This is the critical integration step. We spawn the actual MCP server as a child
 timeout 10 node dist/index.js --help 2>/dev/null || true
 ```
 
-Then use the MCP SDK programmatically. Write a temporary test script:
+Then use the MCP SDK programmatically. Write a temporary test script. **Prereq:** the probe script imports from `@modelcontextprotocol/sdk` — verify it's installed in the project's `node_modules/` before writing the script. If missing, run `npm install` first (it should already be a dependency).
 
 ```typescript
 // .mcp-qa/probe.mjs — temporary probe script

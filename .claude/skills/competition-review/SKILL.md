@@ -145,8 +145,7 @@ If the user approves, state: "Run `/product-taste` next — this brief will info
 
 **Pipeline handoff:**
 
-After presenting results, suggest the next skill in the pipeline:
-> "Run `/next-skill` when ready — [brief context of what the next skill will do with this output]."
+After presenting results, suggest the next skill in the pipeline by name (e.g., "Run `/product-taste` when ready — this brief will inform the premise challenge."). Always name the specific next skill — never use a generic placeholder.
 
 If the user wants to adjust or dig deeper, accommodate. The handoff is a suggestion, not a command.
 
@@ -158,7 +157,7 @@ If the user wants to adjust or dig deeper, accommodate. The handoff is a suggest
 - Domain-specific channels first, general web as fallback.
 - Advisory only — never recommend parking or killing an idea. That's product-taste's job.
 - If the backlog already has competitive notes, offer to skip.
-- Keep the whole process under 5 minutes.
+- Keep the process focused — 3-5 search queries, 3-8 competitors, one synthesis pass.
 - Do not analyze pricing, business models, or technical architecture. Just: who, what, and where's the gap.
 
 **Contributor mode — skill self-improvement:**
