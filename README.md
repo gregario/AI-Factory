@@ -129,7 +129,7 @@ graph TB
 
     subgraph "Knowledge Layer"
         ST["20 Stack Profiles"]
-        SK["12 Skills"]
+        SK["13 Skills"]
         TM["3 Templates"]
     end
 
@@ -205,7 +205,7 @@ graph TB
 
 ## Skills
 
-12 custom skills extend the factory workflow:
+13 custom skills extend the factory workflow, all template-generated from `.tmpl` source files with shared partials for consistency:
 
 | Skill | When | What It Does |
 |-------|------|-------------|
@@ -221,6 +221,21 @@ graph TB
 | `openspec-explore` | Investigating an idea | Thinking partner for exploring requirements and clarifying scope |
 | `openspec-apply-change` | Implementing tasks | Work through OpenSpec tasks with progress tracking |
 | `openspec-archive-change` | After shipping | Archive completed changes into master specs |
+| `factory-overview` | Starting a session | Dashboard scan of all projects, backlog, and pipeline status |
+
+### Skill Infrastructure
+
+Skills are template-driven — edit `.claude/skills/*/SKILL.md.tmpl`, never the generated `SKILL.md`. Shared blocks (Socrates voice, contributor mode, AskUserQuestion format, health scoring, artifact save, pipeline handoff) live in `.claude/skills/partials/` and are injected at generation time.
+
+**Contributor mode** lets skills self-rate their experience 0-10 and file field reports when something isn't a 10. The factory retrospective surfaces trends from these reports.
+
+**Three-tier eval system** validates skills: Tier 1 static validation (free), Tier 2 E2E execution via `claude -p`, Tier 3 LLM-as-judge scoring on clarity/completeness/actionability.
+
+```bash
+bun run gen:skill-docs        # regenerate all skills from templates
+bun test                      # Tier 1 static validation (17 tests)
+bun run test:evals            # Tier 3 LLM-as-judge
+```
 
 ## Templates
 
@@ -310,7 +325,7 @@ See [docs/plans/2026-03-14-roadmap.md](docs/plans/2026-03-14-roadmap.md).
 
 ## Acknowledgments
 
-- [gstack](https://github.com/garrytan/gstack) by Garry Tan — the `qa`, `structural-review`, `ship`, `product-taste`, and `factory-retrospective` skills were adapted from gstack's workflows
+- [gstack](https://github.com/garrytan/gstack) by Garry Tan — the `qa`, `structural-review`, `ship`, `product-taste`, and `factory-retrospective` skills were adapted from gstack's workflows. The skill template system (contributor mode, template-driven generation, three-tier evals) was inspired by gstack's architecture
 - [OpenSpec](https://www.npmjs.com/package/@fission-ai/openspec) by Fission AI — powers the spec pipeline (`/opsx:propose`, `/opsx:explore`, `/opsx:archive`)
 - [Superpowers](https://www.npmjs.com/package/superpowers), [Code Review](https://www.npmjs.com/package/code-review), and [Commit Commands](https://www.npmjs.com/package/commit-commands) by claude-plugins-official — engineering execution, PR review, and git automation
 
