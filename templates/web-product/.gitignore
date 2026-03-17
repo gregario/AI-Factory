@@ -45,6 +45,9 @@ coverage/
 !.gstack/qa-reports/*.md
 !.gstack/qa-reports/*.json
 
+# MCP Registry tokens (created by mcp-publisher CLI)
+.mcpregistry_*
+
 # Misc
 *.tmp
 *.bak

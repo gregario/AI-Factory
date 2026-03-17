@@ -1,6 +1,9 @@
 # Project repos are independent — not tracked by the factory repo
 projects/
 
+# Node
+node_modules/
+
 # macOS
 .DS_Store
 
@@ -16,3 +19,9 @@ docs/drafts/
 # Downstream project plans (private ideas, not shared)
 docs/plans/projects/
 .gstack/
+
+# Skill contributor-mode reports (ephemeral feedback, not tracked)
+.context/skill-reports/*.md
+
+# Skill eval results (machine-specific, regenerated on demand)
+.context/skill-evals/*.json

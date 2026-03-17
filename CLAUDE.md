@@ -122,6 +122,38 @@ Iteration loop:
 - After a major task is committed and final review is done, clear the conversation context (/clear) before starting the next task. This prevents context bleed, frees the full context window, and ensures a clean starting point. Memory files persist across clears, so institutional knowledge is retained.
 - Exception: skip the clear if the next task is tightly coupled to the one just completed (e.g., immediate follow-up fix, continuation of the same feature branch).
 
+SKILL INFRASTRUCTURE
+Skills are template-generated. The source of truth is `.claude/skills/*/SKILL.md.tmpl`.
+Never edit `SKILL.md` directly — it will be overwritten.
+
+Workflow for editing skills:
+1. Edit the `.tmpl` file (or a partial in `.claude/skills/partials/`)
+2. Run `bun run gen:skill-docs` to regenerate
+3. Run `bun test` to verify (Tier 1 static validation)
+4. Commit both `.tmpl` and generated `.md`
+
+Key commands:
+- `bun run gen:skill-docs` — regenerate all SKILL.md from templates
+- `bun run gen:skill-docs:check` — check freshness without writing (exits 1 if stale)
+- `bun test` — run Tier 1 static validation
+- `bun run test:e2e` — run Tier 2 E2E skill tests (costs ~$3-5)
+- `bun run test:evals` — run Tier 3 LLM-as-judge evals (costs ~$0.15/skill)
+- `bun run eval:list` — show eval history
+- `bun run eval:compare <date1> <date2>` — compare eval scores across versions
+
+Shared blocks (partials):
+- `partials/preamble.md` — Socrates voice and session context (all skills)
+- `partials/contributor-mode.md` — self-improvement field reports (all skills)
+- `partials/ask-format.md` — AskUserQuestion conventions (10 skills)
+- `partials/health-scoring.md` — weighted health scoring methodology (QA skills)
+- `partials/artifact-save.md` — dated artifact save pattern (8 skills)
+- `partials/pipeline-handoff.md` — next-skill handoff pattern (pipeline skills)
+
+Contributor mode:
+- Skills self-rate their experience 0-10 at end of execution
+- Reports filed to `.context/skill-reports/` (gitignored)
+- Factory retrospective surfaces trends from these reports
+
 BROWSER QA GATE (web projects only)
 After unit tests pass and BEFORE committing, web projects MUST run `/qa` (diff-aware mode) to verify changes work in a real browser. This catches visual regressions, broken interactions, and console errors that unit tests miss.
 - Applies to: any project using the `web-product` template, or any project with a `framework:` declaration in its CLAUDE.md.
@@ -186,9 +218,22 @@ npm packages (MCP servers, CLI tools, libraries):
 
 MCP servers (in addition to npm badges):
 - MCP Compatible badge: `[![MCP Compatible](https://img.shields.io/badge/MCP-compatible-purple.svg)](https://modelcontextprotocol.io)`
-- Glama registry card (below the badge row)
+- Glama score badge (inline, in the same pill row — NOT the card): `<a href="https://glama.ai/mcp/servers/gregario/{repo}"><img src="https://glama.ai/mcp/servers/gregario/{repo}/badges/score.svg" alt="{repo} MCP server"></a>`
 
-Reference layout: see godot-forge or brewers-almanack README for the exact HTML pattern with `<p align="center">`.
+Example MCP server badge row:
+```html
+<p align="center">
+  <a href="https://www.npmjs.com/package/{pkg}"><img src="https://img.shields.io/npm/v/{pkg}.svg" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/{pkg}"><img src="https://img.shields.io/npm/dm/{pkg}.svg" alt="npm downloads"></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg" alt="Node.js 18+"></a>
+  <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-compatible-purple.svg" alt="MCP Compatible"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
+  <a href="https://github.com/sponsors/gregario"><img src="https://img.shields.io/badge/sponsor-♥-ea4aaa.svg" alt="Sponsor"></a>
+  <a href="https://glama.ai/mcp/servers/gregario/{repo}"><img src="https://glama.ai/mcp/servers/gregario/{repo}/badges/score.svg" alt="{repo} MCP server"></a>
+</p>
+```
+
+Reference layout: see 3dprint-oracle README for the exact pattern.
 
 PUBLISHING STATE TRACKER
 Projects that have a publishing/distribution pipeline (MCP servers, npm packages) must maintain a `status.json` in the repo root. This file tracks what has been done so future sessions don't re-investigate or forget.

@@ -1,0 +1,20 @@
+{
+  "name": "ai-factory",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "gen:skill-docs": "bun run scripts/gen-skill-docs.ts",
+    "gen:skill-docs:check": "bun run scripts/gen-skill-docs.ts --dry-run",
+    "test": "bun test scripts/",
+    "test:e2e": "EVALS=1 bun test scripts/skill-e2e.test.ts",
+    "test:evals": "EVALS=1 bun test scripts/skill-llm-eval.test.ts",
+    "eval:list": "bun run scripts/eval-list.ts",
+    "eval:compare": "bun run scripts/eval-compare.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.79.0"
+  }
+}

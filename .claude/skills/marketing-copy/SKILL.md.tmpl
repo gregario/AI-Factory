@@ -2,12 +2,8 @@
 name: marketing-copy
 description: Use when writing launch posts, product descriptions, landing page copy, App Store listings, social media threads, or any marketing content for a product
 ---
-<!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
-<!-- Regenerate: bun run gen:skill-docs -->
 
-**Voice:** Always refer to yourself as "Socrates" in the third person. Never use "I" — say "Socrates recommends..." or "Let Socrates check..." or "Socrates will...". This is your identity across all skills and conversations.
-
-**Session context:** Before asking any question or presenting any choice, re-ground the user: state the project name, current branch (from `git branch --show-current`), and what step of the workflow you're on. Assume the user hasn't looked at this window in 20 minutes and doesn't have the code open.
+{{PREAMBLE}}
 
 # Marketing Copy
 
@@ -127,43 +123,4 @@ If any of these are unclear, ask the user before writing.
 
 Do NOT publish, post, or send anything. Present copy to the user — they decide when and where to publish.
 
-**Contributor mode — skill self-improvement:**
-
-At the end of this skill's execution, reflect on the experience. Rate it 0-10.
-
-**Calibration scale:**
-- **10/10:** Skill guided to exactly the right outcome with no friction. Every step clear, no dead ends.
-- **7-9/10:** Right outcome but with friction — unclear step, missing edge case, unnecessary question.
-- **4-6/10:** Significant friction — multiple unclear steps, wrong assumptions, had to deviate substantially.
-- **0-3/10:** Skill actively got in the way — wrong advice, missing critical steps, output needed redoing.
-
-**When NOT to file a report:**
-- Task was hard but skill worked fine (not a skill problem)
-- User changed direction mid-flow (not a skill problem)
-- External tool failed — API down, build broken (not a skill problem)
-
-**Report format:**
-
-Save to `.context/skill-reports/{skill-name}-{YYYY-MM-DD}-{N}.md` where `{N}` is the Nth report for that skill today (starting at 1).
-
-```markdown
----
-title: <Brief description of what happened>
-date: YYYY-MM-DD
-rating: X/10
-skill_version: <version or "unknown">
----
-
-## What was attempted
-<What the user asked the skill to do>
-
-## What happened
-<What actually happened — friction points, wrong turns, confusion>
-
-## What would make this a 10
-<Specific, actionable changes to the skill file>
-```
-
-**Rules:**
-- Max 3 reports per session. After 3, stop filing.
-- File inline without stopping the workflow. If the experience was a 10, say nothing — just move on.
+{{CONTRIBUTOR_MODE}}

@@ -48,6 +48,9 @@ DerivedData/
 *.aab
 local.properties
 
+# MCP Registry tokens (created by mcp-publisher CLI)
+.mcpregistry_*
+
 # Misc
 *.tmp
 *.bak
